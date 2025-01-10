@@ -56,7 +56,7 @@ const Navbar = () => {
       label: "Home",
     },
     {
-      path: "/students",
+      path: "/presentio/students",
       icon: <IoPeople className="h-6 w-6" />,
       label: "Students",
     },
