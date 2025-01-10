@@ -1,32 +1,45 @@
-// TO DO
-// Create a better page loader
-
 import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
-import { auth } from "./firebase-config"; // Import the firebase authentication module
+import { Navigate, useLocation } from "react-router-dom";
+import { auth } from "./firebase-config";
 import Navbar from "./Navbar";
 
 const PrivateRoute = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const location = useLocation(); // Get current location
 
   useEffect(() => {
-    // Set up the auth state listener
+    // Persist the auth state in localStorage as a backup
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        setIsAuthenticated(true); // User is logged in
+        setIsAuthenticated(true);
+        localStorage.setItem("isAuthenticated", "true");
       } else {
-        setIsAuthenticated(false); // User is not logged in
+        setIsAuthenticated(false);
+        localStorage.removeItem("isAuthenticated");
       }
-      setIsLoading(false); // Stop loading once we have the auth status
+      setIsLoading(false);
     });
 
-    // Cleanup the listener on unmount
+    // Check localStorage while waiting for Firebase
+    const persistedAuth = localStorage.getItem("isAuthenticated");
+    if (persistedAuth === "true") {
+      setIsAuthenticated(true);
+    }
+
     return () => unsubscribe();
   }, []);
 
   if (isLoading) {
-    // Show a loading state while checking authentication
+    // Only show loading if we don't have a persisted auth state
+    if (localStorage.getItem("isAuthenticated") === "true") {
+      return (
+        <div>
+          <Navbar />
+          <main>{children}</main>
+        </div>
+      );
+    }
     return (
       <div>
         <Navbar />
@@ -36,11 +49,10 @@ const PrivateRoute = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    // If the user is not authenticated, redirect to the login page
-    return <Navigate to="/login" />;
+    // Save the attempted URL to redirect back after login
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // If authenticated, render the children (protected route)
   return (
     <div>
       <Navbar />

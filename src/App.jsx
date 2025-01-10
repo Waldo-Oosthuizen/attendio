@@ -16,20 +16,44 @@ import Home from "./Home"; // Importing the `Home` component for the home page
 import Students from "./Students";
 import PrivateRoute from "./PrivateRoute"; // Importing a custom `PrivateRoute` component to restrict access to protected routes
 
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase-config";
+import { useEffect } from "react";
+
 const App = () => {
   const [showSignUp, setShowSignUp] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuthenticated(!!user);
+      setAuthChecked(true);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (!authChecked) {
+    return null; // or a loading spinner
+  }
 
   return (
     <Router basename="/presentio">
-      {/* Wrapping the entire app with the `Router` to enable routing functionality */}
       <Routes>
-        {/* Define a default route */}
-        <Route path="/" element={<Navigate to="/login" />} />
-        {/* Public Routes */}
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? <Navigate to="/home" /> : <Navigate to="/login" />
+          }
+        />
+
         <Route
           path="/login"
           element={
-            showSignUp ? (
+            isAuthenticated ? (
+              <Navigate to="/home" />
+            ) : showSignUp ? (
               <SignUp setShowSignUp={setShowSignUp} />
             ) : (
               <Login setShowSignUp={setShowSignUp} />
@@ -37,21 +61,15 @@ const App = () => {
           }
         />
 
-        {/* Signup route: Renders the `SignUp` component when the user visits "/signup" */}
-
-        {/* Protected Routes */}
         <Route
           path="/home"
-          // Defines the route for the home page. This route is protected.
           element={
             <PrivateRoute>
-              {/* `PrivateRoute` ensures this route is only accessible to authenticated users */}
               <Home />
-              {/* Renders the `Home` component (main content of the home page) */}
             </PrivateRoute>
           }
         />
-        {/* Students route only accessible from Home or Navbar */}
+
         <Route
           path="/students"
           element={
@@ -60,8 +78,13 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        {/* Fallback Route */}
-        <Route path="*" element={<Navigate to="/login" />} />
+
+        <Route
+          path="*"
+          element={
+            isAuthenticated ? <Navigate to="/home" /> : <Navigate to="/login" />
+          }
+        />
       </Routes>
     </Router>
   );
