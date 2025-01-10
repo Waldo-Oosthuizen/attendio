@@ -21,7 +21,7 @@ const App = () => {
   const [showSignUp, setShowSignUp] = useState(false);
 
   return (
-    <Router>
+    <Router basname="/presentio">
       {/* Wrapping the entire app with the `Router` to enable routing functionality */}
       <Routes>
         {/* Define a default route */}
