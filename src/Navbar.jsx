@@ -115,9 +115,7 @@ const Navbar = () => {
 
           {/* Display title only if the nav is open */}
           {isNavOpen && (
-            <h1 className="text-xl font-semibold absolute left-4">
-              Fretnot Attendance
-            </h1>
+            <h1 className="text-xl font-semibold absolute left-4">Presentio</h1>
           )}
         </div>
 
