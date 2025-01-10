@@ -1,5 +1,4 @@
-import React from "react"; // Importing React for creating the component
-import { useState } from "react";
+import React, { useState } from "react"; // Importing React for creating the component
 import {
   BrowserRouter as Router,
   Routes,
@@ -21,7 +20,7 @@ const App = () => {
   const [showSignUp, setShowSignUp] = useState(false);
 
   return (
-    <Router basname="/presentio">
+    <Router basename="/presentio">
       {/* Wrapping the entire app with the `Router` to enable routing functionality */}
       <Routes>
         {/* Define a default route */}
@@ -61,6 +60,8 @@ const App = () => {
             </PrivateRoute>
           }
         />
+        {/* Fallback Route */}
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
   );
