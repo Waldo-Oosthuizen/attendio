@@ -45,13 +45,9 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Landing />} />
-
         <Route
           path="/"
-          element={
-            isAuthenticated ? <Navigate to="/home" /> : <Navigate to="/login" />
-          }
+          element={isAuthenticated ? <Navigate to="/home" /> : <Landing />}
         />
 
         <Route
