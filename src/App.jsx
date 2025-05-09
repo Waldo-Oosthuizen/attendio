@@ -1,6 +1,6 @@
 import React, { useState } from "react"; // Importing React for creating the component
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   Navigate,
@@ -40,7 +40,7 @@ const App = () => {
   }
 
   return (
-    <Router basename="/presentio">
+    <Router>
       <Routes>
         <Route
           path="/"
