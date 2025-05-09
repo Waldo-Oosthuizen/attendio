@@ -21,6 +21,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { useEffect } from "react";
 
+import Landing from "./Landing";
+
 const App = () => {
   const [showSignUp, setShowSignUp] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
@@ -42,6 +44,8 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Landing />} />
+
         <Route
           path="/"
           element={

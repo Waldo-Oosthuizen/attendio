@@ -19,17 +19,7 @@ const DashboardCard = ({
 }) => (
   <button
     onClick={onClick} // Attach click handler to navigate or execute actions
-    className={`${bgColor} rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-200 w-full text-left hover:scale-105`}
-    // Tailwind classes:
-    // - rounded-lg: Rounded corners
-    // - p-6: Padding
-    // - shadow-lg: Standard shadow effect
-    // - hover:shadow-xl: Larger shadow on hover
-    // - transition-all duration-200: Smooth animation for hover effects
-    // - w-full: Full width
-    // - text-left: Align text to the left
-    // - hover:scale-105: Slightly enlarges the card on hover
-  >
+    className={`${bgColor} rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-200 w-full text-left hover:scale-105`}>
     <div className="flex flex-col space-y-2">
       {/* Title of the card */}
       <h3 className="text-xl font-bold">{title}</h3>
@@ -46,30 +36,12 @@ const DashboardCard = ({
 const DashboardBanner = () => (
   <div className="bg-zen-gradient rounded-lg shadow-lg p-8 text-white relative overflow-hidden">
     {/* Tailwind classes:
-     - bg-gradient-to-r: Gradient background transitioning from left to right
-     - from-blue-500 to-blue-600: Blue gradient colors
-     - rounded-lg: Rounded corners
-     - shadow-lg: Standard shadow effect
-     - p-8: Padding
-     - text-white: White text color
-     - relative: Enables positioning of child elements
-     - overflow-hidden: Hides content that overflows the container
-    */}
+     */}
     <div className="relative z-10">
       {/* Welcome message content */}
       <h2 className="text-2xl font-bold mb-2">Welcome to the Dashboard</h2>
     </div>
-    {/* Decorative element */}
-    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 transform rotate-45 -translate-y-8 translate-x-8">
-      {/* Tailwind classes:
-       - absolute: Positioned relative to the parent container
-       - top-0 right-0: Positioned in the top-right corner
-       - w-32 h-32: Width and height of 8rem
-       - bg-white/10: White background with 10% opacity
-       - transform rotate-45: Rotates the element 45 degrees
-       - -translate-y-8 translate-x-8: Offsets the position slightly
-      */}
-    </div>
+    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 transform rotate-45 -translate-y-8 translate-x-8"></div>
   </div>
 );
 

@@ -72,7 +72,7 @@ const Navbar = () => {
     <div className="relative">
       {/* Desktop Sidebar Navigation */}
       <nav
-        className={`fixed top-0 left-0 h-full bg-darkGreen text-white hidden md:flex flex-col ${
+        className={`fixed top-0 left-0 h-full bg-black text-white hidden md:flex flex-col ${
           isNavOpen ? "md:w-64" : "md:w-16"
         } transition-all duration-300 ease-in-out z-40 shadow-lg`}
         aria-expanded={isNavOpen}
@@ -119,7 +119,7 @@ const Navbar = () => {
 
           {/* Display title only if the nav is open */}
           {isNavOpen && (
-            <h1 className="text-xl font-semibold absolute left-4">Presentio</h1>
+            <h1 className="text-xl font-semibold absolute left-4">Attendio</h1>
           )}
         </div>
 
@@ -162,7 +162,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-darkGreen text-white z-40 shadow-lg">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-black text-white z-40 shadow-lg">
         <div className="flex justify-around items-center h-16">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;

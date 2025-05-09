@@ -22,7 +22,7 @@ export default {
       black: "#1F1F1F",
     },
     backgroundImage: {
-      "zen-gradient": "linear-gradient(to right, #A4C89A, #88C2AF)", // Custom gradient
+      "zen-gradient": "linear-gradient(to right, #5C8D67, #3D7C6F)", // Custom gradient
     },
   },
   plugins: [],
