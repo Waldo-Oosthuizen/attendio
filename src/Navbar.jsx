@@ -51,12 +51,12 @@ const Navbar = () => {
   // Array of navigation items, each with a path, icon, label, and optional action
   const navItems = [
     {
-      path: "/presentio/home",
+      path: "#home",
       icon: <FaHome className="h-6 w-6" />,
       label: "Home",
     },
     {
-      path: "/presentio/students",
+      path: "#students",
       icon: <IoPeople className="h-6 w-6" />,
       label: "Students",
     },
