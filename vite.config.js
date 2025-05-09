@@ -3,5 +3,5 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/presentio/", // Use 'presentio' as the repo name
+  base: "/attendio/", // Use 'attendio' as the repo name
 });
