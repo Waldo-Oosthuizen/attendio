@@ -4,9 +4,13 @@ import { auth } from "./firebase-config";
 import Navbar from "./Navbar";
 
 const PrivateRoute = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const location = useLocation(); // Get current location
+
+  // Use localStorage to initialize authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem("isAuthenticated") === "true"
+  );
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Persist the auth state in localStorage as a backup
