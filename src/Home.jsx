@@ -75,13 +75,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6">
-      {/* Tailwind classes:
-       - max-w-7xl: Sets maximum width to 7xl (112rem)
-       - mx-auto: Centers the content horizontally
-       - p-6: Padding of 1.5rem
-       - space-y-6: Vertical spacing between children
-      */}
+    <div className="px-4 sm:px-6 py-6 md:ml-16 max-w-7xl mx-auto space-y-6 transition-all duration-300">
       <DashboardBanner />
       {/* Grid container for dashboard cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
