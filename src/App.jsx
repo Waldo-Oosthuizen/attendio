@@ -89,14 +89,7 @@ const App = () => {
             </PrivateRoute>
           }></Route>
 
-        <Route
-          path="/schedule"
-          element={
-            <PrivateRoute>
-              <Schedule />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/schedule" element={<Schedule />} />
 
         <Route
           path="*"
