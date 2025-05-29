@@ -16,6 +16,7 @@ import Home from "./Home"; // Importing the `Home` component for the home page
 import Students from "./Students";
 import Attendance from "./Attendance";
 import Schedule from "./Schedule";
+import Settings from "./Settings";
 import PrivateRoute from "./PrivateRoute"; // Importing a custom `PrivateRoute` component to restrict access to protected routes
 
 import { onAuthStateChanged } from "firebase/auth";
@@ -94,6 +95,15 @@ const App = () => {
           element={
             <PrivateRoute>
               <Schedule />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/settings"
+          element={
+            <PrivateRoute>
+              <Settings />
             </PrivateRoute>
           }
         />
