@@ -72,6 +72,12 @@ const Home = () => {
       onClick: () => navigate("/schedule"), // Navigate to the "schedule" page on click
       bgColor: "bg-green-50 hover:bg-green-100",
     },
+    {
+      title: "Settings",
+      description: "Manage your preferences and profile settings",
+      onClick: () => navigate("/settings"), // or open modal
+      bgColor: "bg-yellow-50 hover:bg-yellow-100",
+    },
   ];
 
   return (

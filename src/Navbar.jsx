@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react"; // Import React, state, and effect hooks
 import { FaHome } from "react-icons/fa"; // Import Home icon from react-icons
 import { IoPeople } from "react-icons/io5"; // Import People icon from react-icons
-import { FiLogOut } from "react-icons/fi"; // Import Logout icon from react-icons
 import { useLocation, useNavigate } from "react-router-dom"; // Import hooks for routing
-import { signOut } from "firebase/auth"; // Import Firebase authentication function
-import { auth } from "./firebase-config"; // Import Firebase configuration
+import { HiOutlineClipboardList } from "react-icons/hi";
+import { AiOutlineCalendar } from "react-icons/ai";
 
 const Navbar = () => {
   // State to manage whether the navigation bar is open or closed
@@ -37,17 +36,6 @@ const Navbar = () => {
     setIsNavOpen(!isNavOpen);
   };
 
-  // Function to handle user logout
-  const handleLogout = async () => {
-    try {
-      await signOut(auth); // Use Firebase to sign out the user
-      alert("You have been successfully signed out!");
-      navigate("/"); // Redirect to the home page
-    } catch (error) {
-      console.error("Logout Failed:", error.message); // Log any errors
-    }
-  };
-
   // Array of navigation items, each with a path, icon, label, and optional action
   const navItems = [
     {
@@ -61,10 +49,14 @@ const Navbar = () => {
       label: "Students",
     },
     {
-      path: "#",
-      icon: <FiLogOut className="h-6 w-6" />,
-      label: "Logout",
-      action: handleLogout, // Custom action for the logout item
+      path: "#attendance",
+      icon: <HiOutlineClipboardList className="h-6 w-6" />,
+      label: "Attendance",
+    },
+    {
+      path: "#schedule",
+      icon: <AiOutlineCalendar className="h-6 w-6" />,
+      label: "Schedule",
     },
   ];
 
