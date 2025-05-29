@@ -98,7 +98,7 @@ const Students = () => {
   };
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto pb-24">
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="px-4 md:px-6 py-4 border-b border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">

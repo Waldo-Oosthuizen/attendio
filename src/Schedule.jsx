@@ -28,7 +28,7 @@ const Schedule = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-10 px-4">
-      <div className=" shadow-lg rounded-xl p-6 max-w-6xl mx-auto">
+      <div className=" shadow-lg rounded-xl p-6 max-w-6xl mx-auto pb-24">
         <Calendar
           localizer={localizer}
           events={events}
