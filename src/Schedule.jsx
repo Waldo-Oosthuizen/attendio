@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar, dateFnsLocalizer, Views } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -26,17 +26,34 @@ const Schedule = () => {
     },
   ]);
 
+  const [defaultView, setDefaultView] = useState(Views.WEEK);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setDefaultView(Views.DAY);
+      } else {
+        setDefaultView(Views.WEEK);
+      }
+    };
+
+    handleResize(); // Set initially
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-10 px-4">
-      <div className=" shadow-lg rounded-xl p-6 max-w-6xl mx-auto pb-24">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8 px-4 sm:px-6 ">
+      <div className="shadow-lg rounded-xl p-4 sm:p-8 max-w-full mx-auto lg:ml-16 ml-0">
         <Calendar
           localizer={localizer}
           events={events}
           startAccessor="start"
           endAccessor="end"
-          views={{ week: true, day: true }}
-          defaultView="week"
-          style={{ height: 500 }}
+          views={{ day: true, week: true }}
+          defaultView={defaultView}
+          style={{ height: "80vh", width: "100%" }}
+          showMultiDayTimes={true}
         />
       </div>
     </div>
