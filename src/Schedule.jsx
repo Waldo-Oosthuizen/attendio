@@ -47,7 +47,11 @@ const Schedule = () => {
       <div className="shadow-lg rounded-xl p-4 sm:p-8 max-w-full mx-auto lg:ml-16 ml-0">
         <Calendar
           localizer={localizer}
-          events={events}
+          events={
+            Array.isArray(events)
+              ? events.filter((e) => e?.title && e?.start && e?.end)
+              : []
+          }
           startAccessor="start"
           endAccessor="end"
           views={{ day: true, week: true }}

@@ -124,8 +124,8 @@ const StudentList = () => {
   return (
     <div className="max-w-6xl mx-auto my-8 px-4">
       <div className="flex items-center gap-2 mb-6">
-        <Users className="h-6 w-6 text-blue-500" />
-        <h1 className="text-2xl font-bold text-gray-800">Student Attendance</h1>
+        <Users className="h-6 w-6" />
+        <h1 className="text-2xl font-bold">Student Attendance</h1>
       </div>
 
       {error && (
