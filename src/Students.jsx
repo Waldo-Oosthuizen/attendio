@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  Pencil,
-  Trash2,
-  Plus,
-  Save,
-  Music2,
-  Calendar,
-  User,
-} from "lucide-react";
+import StudentCard from "./StudentCard";
+
+import { Plus, GraduationCap } from "lucide-react";
 import {
   collection,
   addDoc,
@@ -98,11 +92,12 @@ const Students = () => {
   };
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto pb-24">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="px-4 md:px-6 py-4 border-b border-gray-200">
+    <div className="max-w-6xl mx-auto my-8 px-4 pb-20">
+      <div className="overflow-hidden">
+        <div className="px-4 md:px-6 py-4 ">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-800">
+            <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2 mb-6">
+              <GraduationCap className="h-8 w-8 " />
               Students
             </h2>
             <button
@@ -114,229 +109,17 @@ const Students = () => {
           </div>
         </div>
 
-        {/* Desktop view - Traditional table */}
-        <div className="hidden md:block overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-50">
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Instrument
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Day
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {students.map((student, index) => (
-                <tr key={student.id || index} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {student.isEditable ? (
-                      <input
-                        type="text"
-                        value={student.name}
-                        onChange={(e) => handleInputChange(e, index, "name")}
-                        placeholder="Enter Name"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      />
-                    ) : (
-                      <div className="flex items-center">
-                        <span className="text-sm text-gray-900">
-                          {student.name || "Not specified"}
-                        </span>
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {student.isEditable ? (
-                      <div className="flex items-center">
-                        <input
-                          type="text"
-                          value={student.instrument}
-                          onChange={(e) =>
-                            handleInputChange(e, index, "instrument")
-                          }
-                          placeholder="Enter Instrument"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-                    ) : (
-                      <div className="flex items-center">
-                        <span className="text-sm text-gray-900">
-                          {student.instrument || "Not specified"}
-                        </span>
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {student.isEditable ? (
-                      <select
-                        value={student.day}
-                        onChange={(e) => handleInputChange(e, index, "day")}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">Select Day</option>
-                        <option value="Monday">Monday</option>
-                        <option value="Tuesday">Tuesday</option>
-                        <option value="Wednesday">Wednesday</option>
-                        <option value="Thursday">Thursday</option>
-                        <option value="Friday">Friday</option>
-                      </select>
-                    ) : (
-                      <span className="inline-flex px-2 py-1 text-sm font-medium bg-gray-100 text-gray-800 rounded-full">
-                        {student.day || "Not selected"}
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => toggleEditMode(index)}
-                        className={`inline-flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                          student.isEditable
-                            ? "bg-green hover:bg-green-700 text-white"
-                            : "bg-blue hover:bg-blue-700 text-white"
-                        }`}>
-                        {student.isEditable ? (
-                          <>
-                            <Save className="w-4 h-4 mr-1" />
-                            Save
-                          </>
-                        ) : (
-                          <>
-                            <Pencil className="w-4 h-4 mr-1" />
-                            Edit
-                          </>
-                        )}
-                      </button>
-                      <button
-                        onClick={() => handleRemoveRow(index)}
-                        className="inline-flex items-center px-3 py-2 bg-red text-white rounded-md transition-colors duration-200">
-                        <Trash2 className="w-4 h-4 mr-1" />
-                        Remove
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Mobile view - Card layout */}
-        <div className="md:hidden">
-          <div className="grid grid-cols-1 gap-4 p-4">
-            {students.map((student, index) => (
-              <div
-                key={student.id || index}
-                className="bg-white rounded-lg border border-gray-200 shadow-sm p-4">
-                {student.isEditable ? (
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        value={student.name}
-                        onChange={(e) => handleInputChange(e, index, "name")}
-                        placeholder="Enter Name"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Instrument
-                      </label>
-                      <div className="flex items-center">
-                        <input
-                          type="text"
-                          value={student.instrument}
-                          onChange={(e) =>
-                            handleInputChange(e, index, "instrument")
-                          }
-                          placeholder="Enter Instrument"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Day
-                      </label>
-                      <select
-                        value={student.day}
-                        onChange={(e) => handleInputChange(e, index, "day")}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">Select Day</option>
-                        <option value="Monday">Monday</option>
-                        <option value="Tuesday">Tuesday</option>
-                        <option value="Wednesday">Wednesday</option>
-                        <option value="Thursday">Thursday</option>
-                        <option value="Friday">Friday</option>
-                      </select>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="p-2 flex justify-between">
-                    <div className="flex items-center">
-                      <User className="w-4 h-4 mr-2 text-gray-400" />
-                      <span className="text-sm font-medium  text-gray-900">
-                        {student.name || "Not specified"}
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <Music2 className="w-4 h-4 mr-2 text-gray-400" />
-                      <span className="text-sm text-gray-600">
-                        {student.instrument || "Not specified"}
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-2 text-gray-400" />
-                      <span className="inline-flex px-2 py-1 text-sm font-medium bg-gray-100 text-gray-800 rounded-full">
-                        {student.day || "Not selected"}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                <div className="mt-4 flex   ">
-                  <button
-                    onClick={() => toggleEditMode(index)}
-                    className={`w-2/3 mr-2 inline-flex items-center justify-center px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                      student.isEditable
-                        ? "bg-green  text-white"
-                        : "bg-blue  text-white"
-                    }`}>
-                    {student.isEditable ? (
-                      <>
-                        <Save className="w-4 h-4 mr-1" />
-                        Save
-                      </>
-                    ) : (
-                      <>
-                        <Pencil className="w-4 h-4 mr-1" />
-                        Edit
-                      </>
-                    )}
-                  </button>
-                  <button
-                    onClick={() => handleRemoveRow(index)}
-                    className="w-2/3 bg-red  text-white mr-2 inline-flex items-center justify-center px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                    <Trash2 className="w-4 h-4 mr-1" />
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+          {students.map((student, index) => (
+            <StudentCard
+              key={student.id || index}
+              student={student}
+              index={index}
+              handleInputChange={handleInputChange}
+              toggleEditMode={toggleEditMode}
+              handleRemoveRow={handleRemoveRow}
+            />
+          ))}
         </div>
       </div>
     </div>
