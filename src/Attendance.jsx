@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { db } from "./firebase-config";
+import React, { useState, useEffect } from 'react';
+import { db } from './firebase-config';
 import {
   collection,
   getDocs,
@@ -7,7 +7,10 @@ import {
   updateDoc,
   arrayUnion,
   Timestamp,
-} from "firebase/firestore";
+  query,
+  where,
+} from 'firebase/firestore';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import {
   CheckCircle,
   XCircle,
@@ -19,7 +22,7 @@ import {
   ChevronDown,
   ChevronUp,
   User,
-} from "lucide-react";
+} from 'lucide-react';
 
 const StudentList = () => {
   const [students, setStudents] = useState([]);
@@ -29,35 +32,54 @@ const StudentList = () => {
   const [expandedStudent, setExpandedStudent] = useState(null);
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const auth = getAuth();
+
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.warn('⚠️ No user logged in');
+        setError('You must be logged in to view attendance.');
+        setLoading(false);
+        return;
+      }
+
       try {
-        const querySnapshot = await getDocs(collection(db, "students"));
+        console.log('✅ Auth confirmed in Attendance:', user.uid);
+        const q = query(
+          collection(db, 'students'),
+          where('ownerId', '==', user.uid)
+        );
+        const querySnapshot = await getDocs(q);
+
         const studentList = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
           attendanceHistory: doc.data().attendanceHistory || [],
         }));
+
         setStudents(studentList);
         setError(null);
+        console.log(
+          `📦 Loaded ${studentList.length} students for UID ${user.uid}`
+        );
       } catch (error) {
-        setError("Failed to fetch students. Please try again later.");
-        console.error("Error fetching students:", error);
+        console.error('🔥 Error fetching students:', error);
+        setError('Failed to fetch students. Please try again later.');
       } finally {
         setLoading(false);
       }
-    };
+    });
 
-    fetchStudents();
+    return unsubscribe;
   }, []);
 
   const handleAttendance = async (studentId, status) => {
     setUpdating(studentId);
     try {
-      const studentRef = doc(db, "students", studentId);
+      const studentRef = doc(db, 'students', studentId);
       const attendanceRecord = {
         status,
         timestamp: Timestamp.now(),
-        date: new Date().toISOString().split("T")[0],
+        date: new Date().toISOString().split('T')[0],
       };
 
       await updateDoc(studentRef, {
@@ -79,9 +101,10 @@ const StudentList = () => {
             : student
         )
       );
+      console.log(`✅ Marked ${studentId} as ${status}`);
     } catch (error) {
-      setError("Failed to update attendance. Please try again.");
-      console.error("Error updating attendance:", error);
+      console.error('🔥 Error updating attendance:', error);
+      setError('Failed to update attendance. Please try again.');
     } finally {
       setUpdating(null);
     }
@@ -89,11 +112,10 @@ const StudentList = () => {
 
   const getAttendanceStats = (history) => {
     if (!history || history.length === 0) return { present: 0, absent: 0 };
-
     return history.reduce(
       (acc, record) => ({
-        present: acc.present + (record.status === "Present" ? 1 : 0),
-        absent: acc.absent + (record.status === "Absent" ? 1 : 0),
+        present: acc.present + (record.status === 'Present' ? 1 : 0),
+        absent: acc.absent + (record.status === 'Absent' ? 1 : 0),
       }),
       { present: 0, absent: 0 }
     );
@@ -153,19 +175,19 @@ const StudentList = () => {
                   </div>
                   <span
                     className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm ${
-                      student.attendance === "Present"
-                        ? "bg-green-100 text-green-600"
-                        : student.attendance === "Absent"
-                        ? "bg-red-100 text-red-600"
-                        : "bg-gray-100 text-gray-600"
+                      student.attendance === 'Present'
+                        ? 'bg-green-100 text-green-600'
+                        : student.attendance === 'Absent'
+                        ? 'bg-red-100 text-red-600'
+                        : 'bg-gray-100 text-gray-600'
                     }`}>
-                    {student.attendance === "Present" && (
+                    {student.attendance === 'Present' && (
                       <CheckCircle className="h-4 w-4" />
                     )}
-                    {student.attendance === "Absent" && (
+                    {student.attendance === 'Absent' && (
                       <XCircle className="h-4 w-4" />
                     )}
-                    {student.attendance || "Not marked"}
+                    {student.attendance || 'Not marked'}
                   </span>
                 </div>
               </div>
@@ -190,7 +212,7 @@ const StudentList = () => {
                 {/* Action Buttons */}
                 <div className="flex gap-2">
                   <button
-                    onClick={() => handleAttendance(student.id, "Present")}
+                    onClick={() => handleAttendance(student.id, 'Present')}
                     disabled={updating === student.id}
                     className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-green-600 bg-green-50 rounded-md hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed">
                     {updating === student.id ? (
@@ -203,7 +225,7 @@ const StudentList = () => {
                     )}
                   </button>
                   <button
-                    onClick={() => handleAttendance(student.id, "Absent")}
+                    onClick={() => handleAttendance(student.id, 'Absent')}
                     disabled={updating === student.id}
                     className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed">
                     {updating === student.id ? (
@@ -241,19 +263,18 @@ const StudentList = () => {
                   <div className="mt-4 space-y-2 border-t pt-4">
                     {[...student.attendanceHistory]
                       .sort((a, b) => b.timestamp.seconds - a.timestamp.seconds)
-                      .slice(0, 5) // Show only last 5 records
+                      .slice(0, 5)
                       .map((record, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between text-sm py-2 border-b last:border-0">
                           <span
-                            className={`flex items-center gap-1
-                            ${
-                              record.status === "Present"
-                                ? "text-green-600"
-                                : "text-red-600"
+                            className={`flex items-center gap-1 ${
+                              record.status === 'Present'
+                                ? 'text-green-600'
+                                : 'text-red-600'
                             }`}>
-                            {record.status === "Present" ? (
+                            {record.status === 'Present' ? (
                               <CheckCircle className="h-4 w-4" />
                             ) : (
                               <XCircle className="h-4 w-4" />
