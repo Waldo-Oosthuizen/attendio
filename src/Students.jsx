@@ -10,6 +10,7 @@ import {
   query,
   where,
   onSnapshot,
+  Timestamp,
 } from 'firebase/firestore';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { db } from './firebase-config';
@@ -54,7 +55,24 @@ const Students = () => {
       (snap) => {
         console.log('📦 Students snapshot:', snap.docs.length, 'docs');
         setStudents(
-          snap.docs.map((d) => ({ id: d.id, ...d.data(), isEditable: false }))
+          snap.docs.map((d) => {
+            const data = d.data();
+            return {
+              id: d.id,
+              // ensure visitTime and other fields exist so StudentCard has predictable props
+              visitTime: data.visitTime || '',
+              // ensure duration is numeric; fallback to 60
+              duration:
+                typeof data.duration === 'number'
+                  ? data.duration
+                  : Number(data.duration) || 60,
+              name: data.name || '',
+              instrument: data.instrument || '',
+              day: data.day || '',
+              isEditable: false,
+              ownerId: data.ownerId || null,
+            };
+          })
         );
       },
       (err) => console.error('🔥 Firestore query error:', err)
@@ -67,17 +85,28 @@ const Students = () => {
   const handleAddRow = () => {
     if (!authReady) return;
     setStudents([
-      { name: '', instrument: '', day: '', isEditable: true },
+      {
+        name: '',
+        instrument: '',
+        day: '',
+        visitTime: 0, // store as "HH:MM"
+        duration: 30, // default duration in minutes
+        isEditable: true,
+      },
       ...students,
     ]);
   };
 
+  // generic input handler works for visitTime, duration (string from select), etc.
+  // We keep the raw input in local state; conversion to Number happens on save.
   const handleInputChange = (e, idx, field) =>
     setStudents(
       students.map((s, i) =>
         i === idx ? { ...s, [field]: e.target.value } : s
       )
     );
+
+  // Helper: construct a Firestore Timestamp from a date (YYYY-MM-DD or Date) + "HH:MM"
 
   const toggleEditMode = async (idx) => {
     const st = students[idx];
@@ -94,17 +123,20 @@ const Students = () => {
         return;
       }
 
-      // ✅ Build payload safely
+      // Build payload (visitTime saved as simple "HH:MM" string; duration stored as Number)
       const payload = {
         name: (st.name || '').trim(),
         instrument: (st.instrument || '').trim(),
         day: (st.day || '').trim(),
+        visitTime: (st.visitTime || '').trim(), // <-- included
+        duration: Number(st.duration) || 0, // ensure Number in DB
         ownerId: assuredUid,
       };
 
       console.log('🧾 Attempting to save student:', payload);
 
-      // 🕵️‍♂️ Check for missing data before saving
+      // keep previous required checks (name/instrument/day). If you want visitTime required,
+      // add `|| !payload.visitTime` to the condition below.
       if (!payload.name || !payload.instrument || !payload.day) {
         console.warn(
           '⚠️ Incomplete data. Please fill in all fields before saving.'

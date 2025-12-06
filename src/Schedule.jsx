@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Calendar, dateFnsLocalizer, Views } from "react-big-calendar";
-import { format, parse, startOfWeek, getDay } from "date-fns";
-import "react-big-calendar/lib/css/react-big-calendar.css";
+import React, { useState, useEffect } from 'react';
+import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
+import { format, parse, startOfWeek, getDay } from 'date-fns';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import enZA from "date-fns/locale/en-ZA";
+import enZA from 'date-fns/locale/en-ZA';
 
 const locales = {
-  "en-ZA": enZA,
+  'en-ZA': enZA,
 };
 
 const localizer = dateFnsLocalizer({
@@ -20,7 +20,7 @@ const localizer = dateFnsLocalizer({
 const Schedule = () => {
   const [events, setEvents] = useState([
     {
-      title: "Math Class",
+      title: 'Math Class',
       start: new Date(),
       end: new Date(new Date().getTime() + 60 * 60 * 1000),
     },
@@ -38,8 +38,8 @@ const Schedule = () => {
     };
 
     handleResize(); // Set initially
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
@@ -56,7 +56,7 @@ const Schedule = () => {
           endAccessor="end"
           views={{ day: true, week: true }}
           defaultView={defaultView}
-          style={{ height: "80vh", width: "100%" }}
+          style={{ height: '80vh', width: '100%' }}
           showMultiDayTimes={true}
         />
       </div>
