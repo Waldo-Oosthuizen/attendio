@@ -1,5 +1,13 @@
 import React from 'react';
-import { Pencil, Save, Trash2, User, Music2, Calendar } from 'lucide-react';
+import {
+  Pencil,
+  Save,
+  Trash2,
+  User,
+  Music2,
+  Calendar,
+  Clock,
+} from 'lucide-react';
 
 /* ---------- Helpers ---------- */
 
@@ -134,11 +142,17 @@ const StudentCard = ({
                   <>
                     {student.day}
                     {visitTime ? ` ${formatTime12(visitTime)}` : ''}
-                    {student.duration ? ` ${student.duration} min` : ''}
                   </>
                 ) : (
                   'No Day Set'
                 )}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-gray-400" />
+              <span className="text-sm text-gray-600">
+                {student.duration ? ` ${student.duration} min` : ''}
               </span>
             </div>
           </div>
