@@ -65,3 +65,14 @@
 .rbc-allday-cell {
   display: none !important;
 }
+
+/* More space between toolbar buttons */
+.rbc-toolbar .rbc-btn-group {
+  display: flex;
+  gap: 0.5rem; /* try 0.75rem or 1rem if you want more space */
+}
+
+/* (Optional) Slightly larger clickable area */
+.rbc-toolbar .rbc-btn-group > button {
+  padding: 0.35rem 0.75rem;
+}

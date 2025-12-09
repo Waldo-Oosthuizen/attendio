@@ -87,9 +87,10 @@ function buildWeeklyEventsFromStudents(students, weeksAhead = 12) {
 
 const Schedule = () => {
   const [events, setEvents] = useState([]);
-  const [defaultView, setDefaultView] = useState(Views.WEEK);
+  const [defaultView, setDefaultView] = useState(Views.DAY);
   const [uid, setUid] = useState(null);
   const [authReady, setAuthReady] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   /* ----------  AUTH HANDSHAKE  ---------- */
   useEffect(() => {
@@ -150,52 +151,38 @@ const Schedule = () => {
   }, [authReady, uid]);
 
   /* ----------  RESPONSIVE VIEW (DAY on mobile)  ---------- */
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setDefaultView(Views.DAY);
-      } else {
-        setDefaultView(Views.WEEK);
-      }
-    };
-
-    handleResize(); // Set initially
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8 px-4 sm:px-6">
       <div className="shadow-lg rounded-xl p-4 sm:p-8 max-w-full mx-auto lg:ml-16 ml-0 bg-white dark:bg-gray-800">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
-          Lesson Schedule
-        </h2>
-
         {!authReady && (
           <p className="mb-4 text-sm text-gray-500">Checking your account...</p>
         )}
-
         {authReady && events.length === 0 && (
           <p className="mb-4 text-sm text-gray-500">
             No scheduled lessons yet. Add students with times on the Students
             page to see them here.
           </p>
         )}
-
-        <Calendar
-          localizer={localizer}
-          events={
-            Array.isArray(events)
-              ? events.filter((e) => e?.title && e?.start && e?.end)
-              : []
-          }
-          startAccessor="start"
-          endAccessor="end"
-          views={{ day: true, week: true }}
-          defaultView={defaultView}
-          style={{ height: '80vh', width: '100%' }}
-          showMultiDayTimes={true}
-        />
+        <div className="mt-2 h-[calc(100vh -180px)] sm:h-[100vh] mb-4 overflow-y-auto overflow-x-auto">
+          {' '}
+          <Calendar
+            localizer={localizer}
+            events={
+              Array.isArray(events)
+                ? events.filter((e) => e?.title && e?.start && e?.end)
+                : []
+            }
+            startAccessor="start"
+            endAccessor="end"
+            views={{ day: true }}
+            defaultView={defaultView}
+            style={{ height: '80vh', width: '100%' }}
+            showMultiDayTimes={true}
+            min={new Date(1970, 0, 1, 9, 0)} // 08:00
+            max={new Date(1970, 0, 1, 20, 0)} // 20:00
+          />
+        </div>
       </div>
     </div>
   );
