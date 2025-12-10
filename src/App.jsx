@@ -1,29 +1,30 @@
-import React, { useState } from "react"; // Importing React for creating the component
+import React, { useState } from 'react'; // Importing React for creating the component
 import {
   HashRouter as Router,
   Routes,
   Route,
   Navigate,
-} from "react-router-dom";
+} from 'react-router-dom';
 // Importing React Router components:
 // - `Router` is the main wrapper for enabling routing in the app.
 // - `Routes` groups all route definitions.
 // - `Route` defines individual routes.
 
-import SignUp from "./signUp"; // Importing the `SignUp` component for the signup page
-import Login from "./login"; // Importing the `Login` component for the login page
-import Home from "./Home"; // Importing the `Home` component for the home page
-import Students from "./Students";
-import Attendance from "./Attendance";
-import Schedule from "./Schedule";
-import Settings from "./Settings";
-import PrivateRoute from "./PrivateRoute"; // Importing a custom `PrivateRoute` component to restrict access to protected routes
+import SignUp from './signUp';
+import Login from './login';
+import Home from './Home';
+import Students from './Students';
+import StudentList from './StudentList';
+import Schedule from './Schedule';
+import Settings from './Settings';
+import AttendanceHistory from './AttendanceHistory';
+import PrivateRoute from './PrivateRoute'; // Importing a custom `PrivateRoute` component to restrict access to protected routes
 
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase-config";
-import { useEffect } from "react";
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase-config';
+import { useEffect } from 'react';
 
-import Landing from "./Landing";
+import Landing from './Landing';
 
 const App = () => {
   const [showSignUp, setShowSignUp] = useState(false);
@@ -83,12 +84,21 @@ const App = () => {
         />
 
         <Route
-          path="/attendance"
+          path="/studentList"
           element={
             <PrivateRoute>
-              <Attendance />
+              <StudentList />
             </PrivateRoute>
           }></Route>
+
+        <Route
+          path="/attendance/:studentId"
+          element={
+            <PrivateRoute>
+              <AttendanceHistory />
+            </PrivateRoute>
+          }
+        />
 
         <Route
           path="/schedule"

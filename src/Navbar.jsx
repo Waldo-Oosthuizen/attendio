@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react"; // Import React, state, and effect hooks
-import { FaHome } from "react-icons/fa"; // Import Home icon from react-icons
-import { IoPeople } from "react-icons/io5"; // Import People icon from react-icons
-import { useLocation, useNavigate } from "react-router-dom"; // Import hooks for routing
-import { HiOutlineClipboardList } from "react-icons/hi";
-import { AiOutlineCalendar } from "react-icons/ai";
+import React, { useState, useEffect } from 'react'; // Import React, state, and effect hooks
+import { FaHome } from 'react-icons/fa'; // Import Home icon from react-icons
+import { IoPeople } from 'react-icons/io5'; // Import People icon from react-icons
+import { useLocation, useNavigate } from 'react-router-dom'; // Import hooks for routing
+import { HiOutlineClipboardList } from 'react-icons/hi';
+import { AiOutlineCalendar } from 'react-icons/ai';
 
 const Navbar = () => {
   // State to manage whether the navigation bar is open or closed
@@ -21,14 +21,14 @@ const Navbar = () => {
   // Effect to close the navigation bar when the "Escape" key is pressed
   useEffect(() => {
     const handleEscape = (e) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         setIsNavOpen(false);
       }
     };
 
     // Add event listener for the "Escape" key
-    window.addEventListener("keydown", handleEscape);
-    return () => window.removeEventListener("keydown", handleEscape); // Clean up event listener
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape); // Clean up event listener
   }, []);
 
   // Function to toggle the navigation bar's open/closed state
@@ -39,24 +39,24 @@ const Navbar = () => {
   // Array of navigation items, each with a path, icon, label, and optional action
   const navItems = [
     {
-      path: "#home",
+      path: '#home',
       icon: <FaHome className="h-6 w-6" />,
-      label: "Home",
+      label: 'Home',
     },
     {
-      path: "#students",
+      path: '#students',
       icon: <IoPeople className="h-6 w-6" />,
-      label: "Students",
+      label: 'Students',
     },
     {
-      path: "#attendance",
+      path: '#studentList',
       icon: <HiOutlineClipboardList className="h-6 w-6" />,
-      label: "Attendance",
+      label: 'Attendance',
     },
     {
-      path: "#schedule",
+      path: '#schedule',
       icon: <AiOutlineCalendar className="h-6 w-6" />,
-      label: "Schedule",
+      label: 'Schedule',
     },
   ];
 
@@ -65,7 +65,7 @@ const Navbar = () => {
       {/* Desktop Sidebar Navigation */}
       <nav
         className={`fixed top-0 left-0 h-full bg-black text-white hidden md:flex flex-col ${
-          isNavOpen ? "md:w-64" : "md:w-16"
+          isNavOpen ? 'md:w-64' : 'md:w-16'
         } transition-all duration-300 ease-in-out z-40 shadow-lg`}
         aria-expanded={isNavOpen}
         role="navigation">
@@ -74,9 +74,9 @@ const Navbar = () => {
           <button
             onClick={toggleNav}
             className={`p-2 text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md transition-all duration-300 ${
-              isNavOpen ? "ml-52" : "ml-3"
+              isNavOpen ? 'ml-52' : 'ml-3'
             }`}
-            aria-label={isNavOpen ? "Close navigation" : "Open navigation"}>
+            aria-label={isNavOpen ? 'Close navigation' : 'Open navigation'}>
             {/* Conditional rendering for open/close icons */}
             {isNavOpen ? (
               <svg
@@ -125,13 +125,13 @@ const Navbar = () => {
                 href={item.path}
                 onClick={item.action || undefined}
                 className={`flex items-center px-3 py-3 rounded-md transition-all duration-200 ${
-                  isNavOpen ? "" : "justify-center"
+                  isNavOpen ? '' : 'justify-center'
                 } ${
                   isActive
-                    ? "bg-white/20 text-white"
-                    : "hover:bg-white/10 text-white/80 hover:text-white"
+                    ? 'bg-white/20 text-white'
+                    : 'hover:bg-white/10 text-white/80 hover:text-white'
                 }`}
-                aria-current={isActive ? "page" : undefined}>
+                aria-current={isActive ? 'page' : undefined}>
                 <span className="flex items-center justify-center w-6">
                   {item.icon}
                 </span>
@@ -165,10 +165,10 @@ const Navbar = () => {
                 onClick={item.action || undefined}
                 className={`flex flex-col items-center justify-center w-full h-full ${
                   isActive
-                    ? "bg-white/20 text-white"
-                    : "text-white/80 hover:text-white active:bg-white/10"
+                    ? 'bg-white/20 text-white'
+                    : 'text-white/80 hover:text-white active:bg-white/10'
                 }`}
-                aria-current={isActive ? "page" : undefined}>
+                aria-current={isActive ? 'page' : undefined}>
                 <span className="flex items-center justify-center">
                   {item.icon}
                 </span>

@@ -1,5 +1,5 @@
-import React from "react"; // Import React library for creating React components
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook from react-router-dom for navigation
+import React from 'react'; // Import React library for creating React components
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook from react-router-dom for navigation
 
 /**
  * DashboardCard Component
@@ -15,7 +15,7 @@ const DashboardCard = ({
   title,
   description,
   onClick,
-  bgColor = "bg-white", // Default background color
+  bgColor = 'bg-white', // Default background color
 }) => (
   <button
     onClick={onClick} // Attach click handler to navigate or execute actions
@@ -55,28 +55,28 @@ const Home = () => {
   // Define dashboard items (title, description, action, and styling)
   const dashboardItems = [
     {
-      title: "Students", // Title of the card
-      description: "Edit or view all students or add new ones", // Description of the card
-      onClick: () => navigate("/students"), // Navigate to the "students" page on click
-      bgColor: "bg-blue-50 hover:bg-blue-100", // Background color and hover effect
+      title: 'Student Profiles', // Title of the card
+      description: 'Edit and add student profiles', // Description of the card
+      onClick: () => navigate('/students'), // Navigate to the "students" page on click
+      bgColor: 'bg-blue-50 hover:bg-blue-100', // Background color and hover effect
     },
     {
-      title: "Attendance",
-      description: "Mark and view student attendance",
-      onClick: () => navigate("/attendance"), // Navigate to the "attendance" page on click
-      bgColor: "bg-purple-50 hover:bg-purple-100",
+      title: 'Manage Students',
+      description: 'Mark attendance and assign homework',
+      onClick: () => navigate('/studentList'), // Navigate to the "attendance" page on click
+      bgColor: 'bg-purple-50 hover:bg-purple-100',
     },
     {
-      title: "Teaching Schedule",
-      description: "View or edit your teaching schedule",
-      onClick: () => navigate("/schedule"), // Navigate to the "schedule" page on click
-      bgColor: "bg-green-50 hover:bg-green-100",
+      title: 'Teaching Calendar',
+      description: 'View your teaching calendar',
+      onClick: () => navigate('/schedule'), // Navigate to the "schedule" page on click
+      bgColor: 'bg-green-50 hover:bg-green-100',
     },
     {
-      title: "Settings",
-      description: "Manage your preferences and profile settings",
-      onClick: () => navigate("/settings"), // or open modal
-      bgColor: "bg-yellow-50 hover:bg-yellow-100",
+      title: 'Settings',
+      description: 'Manage your preferences and profile settings',
+      onClick: () => navigate('/settings'), // or open modal
+      bgColor: 'bg-yellow-50 hover:bg-yellow-100',
     },
   ];
 

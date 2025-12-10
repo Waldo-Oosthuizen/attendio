@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { db } from './firebase-config';
 import {
   collection,
@@ -18,18 +19,21 @@ import {
   AlertCircle,
   Users,
   Calendar,
-  Clock,
-  ChevronDown,
-  ChevronUp,
   User,
 } from 'lucide-react';
+
+// Homeworkpage
+const handleViewHomeworkPage = (studentId) => {
+  console.log('view attendance page for: ', studentId);
+};
 
 const StudentList = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [updating, setUpdating] = useState(null);
-  const [expandedStudent, setExpandedStudent] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const auth = getAuth();
@@ -121,20 +125,6 @@ const StudentList = () => {
     );
   };
 
-  const formatDate = (timestamp) => {
-    if (timestamp?.seconds) {
-      return new Date(timestamp.seconds * 1000).toLocaleDateString();
-    }
-    return new Date(timestamp).toLocaleDateString();
-  };
-
-  const formatTime = (timestamp) => {
-    if (timestamp?.seconds) {
-      return new Date(timestamp.seconds * 1000).toLocaleTimeString();
-    }
-    return new Date(timestamp).toLocaleTimeString();
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -147,7 +137,7 @@ const StudentList = () => {
     <div className="max-w-6xl mx-auto my-8 px-4">
       <div className="flex items-center gap-2 mb-6">
         <Users className="h-6 w-6" />
-        <h1 className="text-2xl font-bold">Student Attendance</h1>
+        <h1 className="text-2xl font-bold">Student Attendance & Homework</h1>
       </div>
 
       {error && (
@@ -239,62 +229,23 @@ const StudentList = () => {
                   </button>
                 </div>
 
-                {/* History Toggle */}
-                <button
-                  onClick={() =>
-                    setExpandedStudent(
-                      expandedStudent === student.id ? null : student.id
-                    )
-                  }
-                  className="w-full mt-4 flex items-center justify-center gap-1 text-sm text-gray-500 hover:text-gray-700">
-                  {expandedStudent === student.id ? (
-                    <>
-                      Hide History <ChevronUp className="h-4 w-4" />
-                    </>
-                  ) : (
-                    <>
-                      View History <ChevronDown className="h-4 w-4" />
-                    </>
-                  )}
-                </button>
-
-                {/* History Section */}
-                {expandedStudent === student.id && (
-                  <div className="mt-4 space-y-2 border-t pt-4">
-                    {[...student.attendanceHistory]
-                      .sort((a, b) => b.timestamp.seconds - a.timestamp.seconds)
-                      .slice(0, 5)
-                      .map((record, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between text-sm py-2 border-b last:border-0">
-                          <span
-                            className={`flex items-center gap-1 ${
-                              record.status === 'Present'
-                                ? 'text-green-600'
-                                : 'text-red-600'
-                            }`}>
-                            {record.status === 'Present' ? (
-                              <CheckCircle className="h-4 w-4" />
-                            ) : (
-                              <XCircle className="h-4 w-4" />
-                            )}
-                            {record.status}
-                          </span>
-                          <div className="flex items-center gap-3">
-                            <span className="flex items-center gap-1 text-gray-500">
-                              <Calendar className="h-4 w-4" />
-                              {formatDate(record.timestamp)}
-                            </span>
-                            <span className="flex items-center gap-1 text-gray-500">
-                              <Clock className="h-4 w-4" />
-                              {formatTime(record.timestamp)}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                )}
+                <div className="flex gap-2 mt-3">
+                  <button
+                    onClick={() =>
+                      navigate(`/attendance/${student.id}`, {
+                        state: { student }, // pass student object
+                      })
+                    }
+                    className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-md bg-blue text-white">
+                    <Calendar className="h-4 w-4" />
+                    View Attendance
+                  </button>
+                  <button
+                    onClick={() => handleViewHomeworkPage(student.id)}
+                    className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-white bg-green rounded-md">
+                    📚 Homework
+                  </button>
+                </div>
               </div>
             </div>
           );
