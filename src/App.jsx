@@ -15,6 +15,7 @@ import Login from './login';
 import Home from './Home';
 import Students from './Students';
 import StudentList from './StudentList';
+import HomeWork from './HomeWork';
 import Schedule from './Schedule';
 import Settings from './Settings';
 import AttendanceHistory from './AttendanceHistory';
@@ -96,6 +97,15 @@ const App = () => {
           element={
             <PrivateRoute>
               <AttendanceHistory />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/homework/:studentId"
+          element={
+            <PrivateRoute>
+              <HomeWork />
             </PrivateRoute>
           }
         />

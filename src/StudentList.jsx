@@ -22,11 +22,6 @@ import {
   User,
 } from 'lucide-react';
 
-// Homeworkpage
-const handleViewHomeworkPage = (studentId) => {
-  console.log('view attendance page for: ', studentId);
-};
-
 const StudentList = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,6 +43,7 @@ const StudentList = () => {
 
       try {
         console.log('✅ Auth confirmed in Attendance:', user.uid);
+        // Fetching students
         const q = query(
           collection(db, 'students'),
           where('ownerId', '==', user.uid)
@@ -241,7 +237,11 @@ const StudentList = () => {
                     View Attendance
                   </button>
                   <button
-                    onClick={() => handleViewHomeworkPage(student.id)}
+                    onClick={() =>
+                      navigate(`/homework/${student.id}`, {
+                        state: { student },
+                      })
+                    }
                     className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-white bg-green rounded-md">
                     📚 Homework
                   </button>
