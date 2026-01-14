@@ -3,7 +3,9 @@ import { useParams, useLocation, Link } from 'react-router-dom';
 import { db } from './firebase-config';
 import {
   collection,
+  doc,
   addDoc,
+  updateDoc,
   query,
   where,
   getDocs,
@@ -84,7 +86,7 @@ const HomeWork = () => {
         title,
         description,
         dueDate,
-        completed: false,
+        status: 'not_done',
         ownerId: auth.currentUser.uid,
         assignedAt: Timestamp.now(),
       });
@@ -101,6 +103,24 @@ const HomeWork = () => {
       setError('Failed to assign homework');
     } finally {
       setLoading(false);
+    }
+  };
+
+  //  toggle if home work has been done - function
+  const updateHomeworkStatus = async (homeworkId, status) => {
+    if (!auth.currentUser) return;
+
+    try {
+      await updateDoc(doc(db, 'homework', homeworkId), {
+        status: status,
+      });
+
+      setHomeworkList((prev) =>
+        prev.map((hw) => (hw.id === homeworkId ? { ...hw, status } : hw))
+      );
+    } catch (err) {
+      console.error('Error updating homework');
+      setError('Failed to update homework status');
     }
   };
 
@@ -193,14 +213,28 @@ const HomeWork = () => {
 
                 <p className="text-sm text-gray-500 mt-2">Due: {hw.dueDate}</p>
               </div>
+              <select
+                value={hw.status || 'not_done'}
+                onChange={(e) => updateHomeworkStatus(hw.id, e.target.value)}
+                className="text-sm border rounded-md px-2 py-1">
+                <option value="not_done">Not practiced</option>
+                <option value="partial">Partially practiced</option>
+                <option value="completed">Practiced</option>
+              </select>
 
               <span
                 className={`text-sm px-2 py-1 rounded-full ${
-                  hw.completed
-                    ? 'bg-green-100 text-green-700'
-                    : 'bg-yellow-100 text-yellow-700'
+                  hw.status === 'completed'
+                    ? 'bg-green text-white'
+                    : hw.status === 'partial'
+                    ? 'bg-orange text-white'
+                    : 'bg-red text-white'
                 }`}>
-                {hw.completed ? 'Completed' : 'Pending'}
+                {hw.status === 'completed'
+                  ? 'Practiced'
+                  : hw.status === 'partial'
+                  ? 'Partially practiced'
+                  : 'Did not practiced'}
               </span>
             </div>
           ))
