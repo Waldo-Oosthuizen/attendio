@@ -142,115 +142,120 @@ const StudentList = () => {
           <p>{error}</p>
         </div>
       )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {students.map((student) => {
-          const stats = getAttendanceStats(student.attendanceHistory);
-          return (
-            <div
-              key={student.id}
-              className="bg-white rounded-lg shadow-lg overflow-hidden">
-              {/* Card Header */}
-              <div className="p-4 border-b bg-gray-50">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <User className="h-5 w-5 text-gray-400" />
-                    <h2 className="font-semibold text-gray-800">
-                      {student.name}
-                    </h2>
-                  </div>
-                  <span
-                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm ${
-                      student.attendance === 'Present'
-                        ? 'bg-green-100 text-green-600'
-                        : student.attendance === 'Absent'
-                        ? 'bg-red-100 text-red-600'
-                        : 'bg-gray-100 text-gray-600'
-                    }`}>
-                    {student.attendance === 'Present' && (
-                      <CheckCircle className="h-4 w-4" />
-                    )}
-                    {student.attendance === 'Absent' && (
-                      <XCircle className="h-4 w-4" />
-                    )}
-                    {student.attendance || 'Not marked'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Stats Section */}
-              <div className="p-4 bg-white">
-                <div className="flex justify-around mb-4">
-                  <div className="text-center">
-                    <div className="text-green-600 font-semibold">
-                      {stats.present}
+      {students.length === 0 ? (
+        <p className="text-center text-gray-500 col-span-full">
+          No students found yet. Add one on the students profile page.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {students.map((student) => {
+            const stats = getAttendanceStats(student.attendanceHistory);
+            return (
+              <div
+                key={student.id}
+                className="bg-white rounded-lg shadow-lg overflow-hidden">
+                {/* Card Header */}
+                <div className="p-4 border-b bg-gray-50">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <User className="h-5 w-5 text-gray-400" />
+                      <h2 className="font-semibold text-gray-800">
+                        {student.name}
+                      </h2>
                     </div>
-                    <div className="text-sm text-gray-500">Present</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-red-600 font-semibold">
-                      {stats.absent}
-                    </div>
-                    <div className="text-sm text-gray-500">Absent</div>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleAttendance(student.id, 'Present')}
-                    disabled={updating === student.id}
-                    className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-green-600 bg-green-50 rounded-md hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed">
-                    {updating === student.id ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <>
+                    <span
+                      className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm ${
+                        student.attendance === 'Present'
+                          ? 'bg-green-100 text-green-600'
+                          : student.attendance === 'Absent'
+                          ? 'bg-red-100 text-red-600'
+                          : 'bg-gray-100 text-gray-600'
+                      }`}>
+                      {student.attendance === 'Present' && (
                         <CheckCircle className="h-4 w-4" />
-                        Present
-                      </>
-                    )}
-                  </button>
-                  <button
-                    onClick={() => handleAttendance(student.id, 'Absent')}
-                    disabled={updating === student.id}
-                    className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed">
-                    {updating === student.id ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <>
+                      )}
+                      {student.attendance === 'Absent' && (
                         <XCircle className="h-4 w-4" />
-                        Absent
-                      </>
-                    )}
-                  </button>
+                      )}
+                      {student.attendance || 'Not marked'}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="flex gap-2 mt-3">
-                  <button
-                    onClick={() =>
-                      navigate(`/attendance/${student.id}`, {
-                        state: { student }, // pass student object
-                      })
-                    }
-                    className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-md bg-blue text-white">
-                    <Calendar className="h-4 w-4" />
-                    View Attendance
-                  </button>
-                  <button
-                    onClick={() =>
-                      navigate(`/homework/${student.id}`, {
-                        state: { student },
-                      })
-                    }
-                    className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-white bg-green rounded-md">
-                    📚 Homework
-                  </button>
+                {/* Stats Section */}
+                <div className="p-4 bg-white">
+                  <div className="flex justify-around mb-4">
+                    <div className="text-center">
+                      <div className="text-green-600 font-semibold">
+                        {stats.present}
+                      </div>
+                      <div className="text-sm text-gray-500">Present</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-red-600 font-semibold">
+                        {stats.absent}
+                      </div>
+                      <div className="text-sm text-gray-500">Absent</div>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleAttendance(student.id, 'Present')}
+                      disabled={updating === student.id}
+                      className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-green-600 bg-green-50 rounded-md hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed">
+                      {updating === student.id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          <CheckCircle className="h-4 w-4" />
+                          Present
+                        </>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => handleAttendance(student.id, 'Absent')}
+                      disabled={updating === student.id}
+                      className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed">
+                      {updating === student.id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          <XCircle className="h-4 w-4" />
+                          Absent
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      onClick={() =>
+                        navigate(`/attendance/${student.id}`, {
+                          state: { student }, // pass student object
+                        })
+                      }
+                      className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-md bg-blue text-white">
+                      <Calendar className="h-4 w-4" />
+                      View Attendance
+                    </button>
+                    <button
+                      onClick={() =>
+                        navigate(`/homework/${student.id}`, {
+                          state: { student },
+                        })
+                      }
+                      className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-white bg-green rounded-md">
+                      📚 Homework
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
