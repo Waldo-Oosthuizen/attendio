@@ -125,7 +125,7 @@ const HomeWork = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto my-8 px-4">
+    <div className="max-w-3xl mx-auto my-8 px-4 pb-24">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <Notebook className="h-6 w-6 text-gray-500" />
@@ -203,8 +203,13 @@ const HomeWork = () => {
           homeworkList.map((hw) => (
             <div
               key={hw.id}
-              className="border rounded-lg p-4 flex items-center justify-between">
-              <div>
+              className="
+    border rounded-lg p-4
+    flex flex-col gap-4
+    sm:flex-row sm:items-center sm:justify-between
+  ">
+              {/* Homework info */}
+              <div className="flex-1">
                 <h3 className="font-semibold text-lg">{hw.title}</h3>
 
                 {hw.description && (
@@ -213,29 +218,33 @@ const HomeWork = () => {
 
                 <p className="text-sm text-gray-500 mt-2">Due: {hw.dueDate}</p>
               </div>
-              <select
-                value={hw.status || 'not_done'}
-                onChange={(e) => updateHomeworkStatus(hw.id, e.target.value)}
-                className="text-sm border rounded-md px-2 py-1">
-                <option value="not_done">Not practiced</option>
-                <option value="partial">Partially practiced</option>
-                <option value="completed">Practiced</option>
-              </select>
 
-              <span
-                className={`text-sm px-2 py-1 rounded-full ${
-                  hw.status === 'completed'
-                    ? 'bg-green text-white'
+              {/* Controls */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                <select
+                  value={hw.status || 'not_done'}
+                  onChange={(e) => updateHomeworkStatus(hw.id, e.target.value)}
+                  className="text-sm border rounded-md px-2 py-1 w-full sm:w-auto">
+                  <option value="not_done">Not practiced</option>
+                  <option value="partial">Partially practiced</option>
+                  <option value="completed">Practiced</option>
+                </select>
+
+                <span
+                  className={`text-sm px-3 py-1 rounded-full text-center whitespace-nowrap ${
+                    hw.status === 'completed'
+                      ? 'bg-green text-white'
+                      : hw.status === 'partial'
+                        ? 'bg-orange text-white'
+                        : 'bg-red text-white'
+                  }`}>
+                  {hw.status === 'completed'
+                    ? 'Practiced'
                     : hw.status === 'partial'
-                    ? 'bg-orange text-white'
-                    : 'bg-red text-white'
-                }`}>
-                {hw.status === 'completed'
-                  ? 'Practiced'
-                  : hw.status === 'partial'
-                  ? 'Partially practiced'
-                  : 'Did not practiced'}
-              </span>
+                      ? 'Partially practiced'
+                      : 'Did not practice'}
+                </span>
+              </div>
             </div>
           ))
         )}

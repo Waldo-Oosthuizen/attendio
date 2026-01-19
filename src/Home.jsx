@@ -81,7 +81,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="px-4 sm:px-6 pb-24 py-6 md:ml-16 max-w-7xl mx-auto space-y-6 transition-all duration-300">
+    <div className="px-4 sm:px-6 pb-24 py-6 md:ml-16 max-w-7xl mx-auto space-y-6 transition-all duration-300 pb-24">
       <DashboardBanner />
       {/* Grid container for dashboard cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

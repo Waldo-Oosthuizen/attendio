@@ -130,7 +130,7 @@ const StudentList = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto my-8 px-4">
+    <div className="max-w-6xl mx-auto my-8 px-4 pb-24">
       <div className="flex items-center gap-2 mb-6">
         <Users className="h-6 w-6" />
         <h1 className="text-2xl font-bold">Student Attendance & Homework</h1>
@@ -168,8 +168,8 @@ const StudentList = () => {
                         student.attendance === 'Present'
                           ? 'bg-green-100 text-green-600'
                           : student.attendance === 'Absent'
-                          ? 'bg-red-100 text-red-600'
-                          : 'bg-gray-100 text-gray-600'
+                            ? 'bg-red-100 text-red-600'
+                            : 'bg-gray-100 text-gray-600'
                       }`}>
                       {student.attendance === 'Present' && (
                         <CheckCircle className="h-4 w-4" />
