@@ -16,6 +16,8 @@ import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { db } from './firebase-config';
 import { addOwnerIdToExistingDocs } from './utils/updateOwnerId';
 
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
 const Students = () => {
   const [students, setStudents] = useState([]);
   const [uid, setUid] = useState(null);
@@ -107,7 +109,6 @@ const Students = () => {
     );
 
   // Helper: construct a Firestore Timestamp from a date (YYYY-MM-DD or Date) + "HH:MM"
-
   const toggleEditMode = async (idx) => {
     const st = students[idx];
     const next = students.map((s, i) =>
@@ -177,6 +178,15 @@ const Students = () => {
     }
   };
 
+  /// Filter Function
+  const studentsByDay = DAYS.reduce((acc, day) => {
+    acc[day] = students
+      .filter((student) => student.day === day)
+      .sort((a, b) => a.visitTime.localeCompare(b.visitTime));
+
+    return acc;
+  }, {});
+
   /* ----------  RENDER  ---------- */
   return (
     <div className="max-w-6xl mx-auto my-8 px-4 pb-20">
@@ -193,22 +203,28 @@ const Students = () => {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-        {students.length === 0 ? (
-          <p className="text-center text-gray-500 col-span-full">
-            No students found yet. Add one using the button above 👆
-          </p>
-        ) : (
-          students.map((st, idx) => (
-            <StudentCard
-              key={st.id ?? `temp-${idx}`}
-              student={st}
-              index={idx}
-              handleInputChange={handleInputChange}
-              toggleEditMode={toggleEditMode}
-              handleRemoveRow={handleRemoveRow}
-            />
-          ))
-        )}
+        {DAYS.map((day) => (
+          <div key={day} className="col-span-full">
+            <h3 className="text-lg font-bold mt-6 mb-3 border-b pb-1">{day}</h3>
+
+            {studentsByDay[day].length === 0 ? (
+              <p className="text-gray-400 mb-6">No students scheduled</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {studentsByDay[day].map((student, idx) => (
+                  <StudentCard
+                    key={student.id ?? `temp-${day}-${idx}`}
+                    student={student}
+                    index={idx}
+                    handleInputChange={handleInputChange}
+                    toggleEditMode={toggleEditMode}
+                    handleRemoveRow={handleRemoveRow}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
