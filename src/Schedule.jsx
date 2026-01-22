@@ -153,13 +153,15 @@ const Schedule = () => {
   /* ----------  RESPONSIVE VIEW (DAY on mobile)  ---------- */
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8 px-4 sm:px-6">
-      <div className="shadow-lg rounded-xl p-4 sm:p-8 max-w-full mx-auto lg:ml-16 ml-0 bg-white dark:bg-gray-800">
+    <div className="min-h-screen  dark:bg-gray py-8 px-4 sm:px-6">
+      <div className="shadow-lg rounded-xl p-4 sm:p-8 max-w-full mx-auto lg:ml-16 ml-0 bg-white ">
         {!authReady && (
-          <p className="mb-4 text-sm text-gray-500">Checking your account...</p>
+          <p className="mb-4 text-sm text-black-500">
+            Checking your account...
+          </p>
         )}
         {authReady && events.length === 0 && (
-          <p className="mb-4 text-sm text-gray-500">
+          <p className="mb-4 text-sm text-black-500">
             No scheduled lessons yet. Add students with times on the Students
             page to see them here.
           </p>

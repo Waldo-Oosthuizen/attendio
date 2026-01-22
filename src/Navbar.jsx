@@ -64,7 +64,7 @@ const Navbar = () => {
     <div className="relative">
       {/* Desktop Sidebar Navigation */}
       <nav
-        className={`fixed top-0 left-0 h-full bg-black text-white hidden md:flex flex-col ${
+        className={`fixed top-0 left-0 h-full bg-white text-black hidden md:flex flex-col ${
           isNavOpen ? 'md:w-64' : 'md:w-16'
         } transition-all duration-300 ease-in-out z-40 shadow-lg`}
         aria-expanded={isNavOpen}
@@ -73,7 +73,7 @@ const Navbar = () => {
         <div className="relative h-16 flex items-center border-b border-white/10">
           <button
             onClick={toggleNav}
-            className={`p-2 text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md transition-all duration-300 ${
+            className={`p-2 text-black hover:bg-black/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-black/20 rounded-md transition-all duration-300 ${
               isNavOpen ? 'ml-52' : 'ml-3'
             }`}
             aria-label={isNavOpen ? 'Close navigation' : 'Open navigation'}>
@@ -111,7 +111,7 @@ const Navbar = () => {
 
           {/* Display title only if the nav is open */}
           {isNavOpen && (
-            <h1 className="text-xl font-semibold absolute left-4">Attendio</h1>
+            <h1 className="text-xl font-semibold absolute left-4">Staccato</h1>
           )}
         </div>
 
@@ -128,8 +128,8 @@ const Navbar = () => {
                   isNavOpen ? '' : 'justify-center'
                 } ${
                   isActive
-                    ? 'bg-white/20 text-white'
-                    : 'hover:bg-white/10 text-white/80 hover:text-white'
+                    ? 'bg-black/20 text-black/80'
+                    : 'hover:bg-black/10 text-black/80 hover:text-black'
                 }`}
                 aria-current={isActive ? 'page' : undefined}>
                 <span className="flex items-center justify-center w-6">
@@ -154,7 +154,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-black text-white z-40 shadow-lg mt-16">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white text-black z-40 shadow-lg border-t-2 mt-16">
         <div className="flex justify-around items-center h-16">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
@@ -165,8 +165,8 @@ const Navbar = () => {
                 onClick={item.action || undefined}
                 className={`flex flex-col items-center justify-center w-full h-full ${
                   isActive
-                    ? 'bg-white/20 text-white'
-                    : 'text-white/80 hover:text-white active:bg-white/10'
+                    ? 'bg-black/20 text-black'
+                    : 'text-black/80 hover:text-black active:bg-white/10'
                 }`}
                 aria-current={isActive ? 'page' : undefined}>
                 <span className="flex items-center justify-center">

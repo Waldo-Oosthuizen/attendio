@@ -146,7 +146,7 @@ const StudentCard = ({
           <button
             onClick={() => toggleEditMode(student.localId)}
             className={`flex-1 px-3 py-2 rounded-md text-white ${
-              student.isEditable ? 'bg-green' : 'bg-blue'
+              student.isEditable ? 'bg-emerald-600' : 'bg-amber-600'
             }`}>
             {student.isEditable ? (
               <>
@@ -163,8 +163,8 @@ const StudentCard = ({
 
           <button
             onClick={() => handleRemoveRow(student.localId)}
-            className="flex-1 bg-red text-white px-3 py-2 rounded-md">
-            <Trash2 className="h-4 w-4 inline mr-1" />
+            className="flex-1 bg-rose-600 text-white px-3 py-2 rounded-md">
+            <Trash2 className="h-4 w-4 inline mr-1 " />
             Remove
           </button>
         </div>

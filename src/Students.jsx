@@ -161,22 +161,22 @@ const Students = () => {
   /* ---------- RENDER ---------- */
   return (
     <div className="max-w-6xl mx-auto my-8 px-4 pb-20">
-      <header className="flex justify-between items-center py-4">
+      <header className="flex justify-between items-center py-4 text-emerald--600">
         <h2 className="text-2xl font-bold flex items-center gap-2">
-          <GraduationCap /> Students
+          <GraduationCap className="text-emerald-500" /> Students
         </h2>
 
         <button
           onClick={handleAddRow}
-          className="px-4 py-2 bg-blue text-white rounded-md">
+          className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md">
           <Plus className="inline mr-2" />
           Add Student
         </button>
       </header>
 
       {unscheduledStudents.length > 0 && (
-        <div className="mb-10">
-          <h3 className="text-lg font-bold mt-2 mb-3 border-b pb-1">
+        <div className="mb-10 ">
+          <h3 className="text-lg font-bold mt-2 mb-3 border-b pb-1 ">
             Add Students
           </h3>
 

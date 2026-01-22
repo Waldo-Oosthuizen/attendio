@@ -256,7 +256,7 @@ const StudentList = () => {
                                   state: { student },
                                 })
                               }
-                              className="flex-1 px-3 py-2 text-sm bg-blue text-white rounded-md">
+                              className="flex-1 px-3 py-2 text-sm bg-emerald-500 hover:bg-emerald-600 text-white rounded-md">
                               <Calendar className="h-4 w-4 inline mr-1" />
                               Attendance
                             </button>
@@ -267,7 +267,7 @@ const StudentList = () => {
                                   state: { student },
                                 })
                               }
-                              className="flex-1 px-3 py-2 text-sm bg-green text-white rounded-md">
+                              className="flex-1 px-3 py-2 text-sm bg-indigo-500 hover:bg-indigo-600 text-white rounded-md">
                               📚 Homework
                             </button>
                           </div>
