@@ -1,6 +1,10 @@
 import React from 'react'; // Import React library for creating React components
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook from react-router-dom for navigation
-import bgImage from './assets/home-bg.png';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from './firebase-config';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useEffect, useState } from 'react';
+
 import {
   Users,
   Calendar,
@@ -20,18 +24,18 @@ const DashboardCard = ({
 }) => (
   <button
     onClick={onClick} // Attach click handler to navigate or execute actions
-    className={`${bgColor} group rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-200 w-full text-left `}>
+    className={`${bgColor}  hover:text-emerald-600 group rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-200 w-full text-left hover:bg-gray-50 `}>
     <div className="flex flex-col space-y-3 px-5">
       {Icon && (
-        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-          <Icon className="w-5 h-5 text-blue-600" />
+        <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center">
+          <Icon className="w-5 h-5 text-white" />
         </div>
       )}
       {/* Title of the card */}
-      <h3 className="text-xl font-bold">{title}</h3>
+      <h3 className="text-xl font-bold ">{title}</h3>
       {/* Description of the card */}
       <p className="text-gray-600 text-sm">{description}</p>
-      <div className="mt-4 flex items-center text-blue-600 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="mt-4 flex items-center text-emerald-600 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
         <span>View Details</span>
         <svg
           className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
@@ -55,7 +59,7 @@ const DashboardCard = ({
  * Displays a banner at the top of the dashboard with a welcome message.
  */
 const DashboardBanner = () => (
-  <div className="relative  flex mt-4 mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 sticky top-0 w-[92vw]">
+  <div className="relative  lg:ml-16 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 sticky top-0 w-[95vw]">
     {/* Tailwind classes:
      */}
     <div className="p-4 flex-col">
@@ -72,7 +76,7 @@ const DashboardBanner = () => (
         <input
           type="text"
           placeholder="Search..."
-          className="pl-10 pr-4 py-3 bg-gray-100 rounded-lg border border-transparent focus:border-blue-500 focus:bg-white focus:outline-none transition-all w-[420px] rounded-lg focus:shadow-md "
+          className="pl-10 pr-4 py-3 bg-gray-100 rounded-lg border border-transparent focus:border-b-emerald-600 focus:bg-white focus:outline-none transition-all w-[420px] rounded-lg focus:shadow-md "
         />
       </div>
     </div>
@@ -85,6 +89,26 @@ const DashboardBanner = () => (
  */
 const Home = () => {
   const navigate = useNavigate(); // useNavigate hook for programmatic navigation
+  const [studentCount, setStudentCount] = useState(0);
+
+  // Fetch students and count
+  useEffect(() => {
+    const auth = getAuth();
+
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) return;
+
+      const q = query(
+        collection(db, 'students'),
+        where('ownerId', '==', user.uid)
+      );
+
+      const snapshot = await getDocs(q);
+      setStudentCount(snapshot.size);
+    });
+
+    return unsubscribe;
+  });
 
   // Define dashboard items (title, description, action, and styling)
   const dashboardItems = [
@@ -115,9 +139,9 @@ const Home = () => {
   ];
 
   return (
-    <div className="ml-4 min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden bg-cover bg-center">
-      <main className="lg:ml-20 md:ml-20 mb-32">
-        <DashboardBanner />
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden bg-cover bg-center">
+      <DashboardBanner />
+      <main className="lg:ml-25 md:ml-20 mb-32">
         {/* Grid container for dashboard cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-[92vw] mb-8 ">
           {dashboardItems.map((item, index) => (
@@ -130,6 +154,76 @@ const Home = () => {
               icon={item.icon}
             />
           ))}
+        </div>
+
+        {/* Quick Actions Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Recent Activity */}
+          <div className="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50 shadow-lg">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              Recent Activity
+            </h2>
+            <div className="space-y-4">
+              {[
+                {
+                  action: 'New student enrolled',
+                  time: '2 hours ago',
+                  color: 'bg-green-500',
+                },
+                {
+                  action: 'Homework submitted by Sarah',
+                  time: '4 hours ago',
+                  color: 'bg-emerald-500',
+                },
+                {
+                  action: 'Attendance marked for Math 101',
+                  time: '6 hours ago',
+                  color: 'bg-teal-500',
+                },
+                {
+                  action: 'Calendar event updated',
+                  time: '1 day ago',
+                  color: 'bg-lime-500',
+                },
+              ].map((activity, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                  <div
+                    className={`w-2 h-2 ${activity.color} rounded-full`}></div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-gray-700">
+                      {activity.action}
+                    </p>
+                    <p className="text-xs text-gray-500">{activity.time}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50 shadow-lg">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              Quick Stats
+            </h2>
+            <div className="space-y-4">
+              <div className="p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl">
+                <p className="text-sm text-gray-600 mb-1">Total Students</p>
+                <p className="text-2xl font-bold text-green-600">
+                  {studentCount}
+                </p>
+              </div>
+              <div className="p-4 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl">
+                <p className="text-sm text-gray-600 mb-1">Classes Today</p>
+                <p className="text-2xl font-bold text-emerald-600">8</p>
+              </div>
+              <div className="p-4 bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl">
+                <p className="text-sm text-gray-600 mb-1">Pending Tasks</p>
+                <p className="text-2xl font-bold text-teal-600">12</p>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>
