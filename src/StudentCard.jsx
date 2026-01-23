@@ -32,7 +32,7 @@ const StudentCard = ({
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       {/* Header */}
-      <div className="p-4  bg-gray-200 flex items-center justify-between">
+      <div className="p-4  bg-gray-100 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <User className="w-5 h-5 text-black" />
           <h2 className="font-semibold text-black">

@@ -178,7 +178,7 @@ const StudentList = () => {
                         key={student.id}
                         className="bg-white rounded-lg shadow-lg overflow-hidden">
                         {/* Card Header */}
-                        <div className="p-4 bg-gray-200">
+                        <div className="p-4 bg-gray-100">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <User className="h-5 w-5 text-black" />

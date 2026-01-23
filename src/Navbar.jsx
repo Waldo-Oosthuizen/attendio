@@ -128,8 +128,8 @@ const Navbar = () => {
                   isNavOpen ? '' : 'justify-center'
                 } ${
                   isActive
-                    ? 'bg-black/20 text-black/80'
-                    : 'hover:bg-black/10 text-black/80 hover:text-white'
+                    ? 'bg-slate-700 text-white'
+                    : 'hover:bg-slate-700 text-black/80 hover:text-white'
                 }`}
                 aria-current={isActive ? 'page' : undefined}>
                 <span className="flex items-center justify-center w-6">
@@ -146,7 +146,7 @@ const Navbar = () => {
         {/* Footer Section */}
         {isNavOpen && (
           <div className="mt-auto p-4 border-t border-white/10">
-            <div className="text-sm text-white/60">
+            <div className="text-sm text-slate-700">
               &copy; 2025 Fretnot Music School
             </div>
           </div>
