@@ -160,49 +160,28 @@ const Students = () => {
 
   /* ---------- RENDER ---------- */
   return (
-    <div className="max-w-6xl mx-auto my-8 px-4 pb-20">
-      <header className="flex justify-between items-center py-4 text-emerald--600">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden bg-cover bg-center">
+      <header className="flex justify-between items-center bg-white p-8 lg:ml-16 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 sticky top-0 ">
         <h2 className="text-2xl font-bold flex items-center gap-2">
-          <GraduationCap className="text-emerald-500" /> Students
+          <GraduationCap className="text-2xl font-bold" /> Students
         </h2>
 
         <button
           onClick={handleAddRow}
-          className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md">
+          className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-md">
           <Plus className="inline mr-2" />
           Add Student
         </button>
       </header>
+      <div className="lg:ml-16 px-4 pb-24 ">
+        {unscheduledStudents.length > 0 && (
+          <div className="mb-10 ">
+            <h3 className="text-lg font-bold mt-2 mb-3 border-b pb-1 ">
+              Add Students
+            </h3>
 
-      {unscheduledStudents.length > 0 && (
-        <div className="mb-10 ">
-          <h3 className="text-lg font-bold mt-2 mb-3 border-b pb-1 ">
-            Add Students
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {unscheduledStudents.map((student) => (
-              <StudentCard
-                key={student.localId}
-                student={student}
-                handleInputChange={handleInputChange}
-                toggleEditMode={toggleEditMode}
-                handleRemoveRow={handleRemoveRow}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {DAYS.map((day) => (
-        <div key={day} className="mb-10">
-          <h3 className="text-lg font-bold border-b mb-3">{day}</h3>
-
-          {studentsByDay[day].length === 0 ? (
-            <p className="text-gray-400">No students scheduled</p>
-          ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {studentsByDay[day].map((student) => (
+              {unscheduledStudents.map((student) => (
                 <StudentCard
                   key={student.localId}
                   student={student}
@@ -212,9 +191,31 @@ const Students = () => {
                 />
               ))}
             </div>
-          )}
-        </div>
-      ))}
+          </div>
+        )}
+
+        {DAYS.map((day) => (
+          <div key={day} className="mb-10">
+            <h3 className="text-lg font-bold border-b mb-3">{day}</h3>
+
+            {studentsByDay[day].length === 0 ? (
+              <p className="text-gray-400">No students scheduled</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {studentsByDay[day].map((student) => (
+                  <StudentCard
+                    key={student.localId}
+                    student={student}
+                    handleInputChange={handleInputChange}
+                    toggleEditMode={toggleEditMode}
+                    handleRemoveRow={handleRemoveRow}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

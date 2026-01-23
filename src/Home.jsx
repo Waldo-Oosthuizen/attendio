@@ -218,10 +218,6 @@ const Home = () => {
                 <p className="text-sm text-gray-600 mb-1">Classes Today</p>
                 <p className="text-2xl font-bold text-emerald-600">8</p>
               </div>
-              <div className="p-4 bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl">
-                <p className="text-sm text-gray-600 mb-1">Pending Tasks</p>
-                <p className="text-2xl font-bold text-teal-600">12</p>
-              </div>
             </div>
           </div>
         </div>

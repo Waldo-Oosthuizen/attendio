@@ -142,24 +142,25 @@ const StudentList = () => {
   }, {});
 
   return (
-    <div className="max-w-6xl mx-auto my-8 px-4 pb-24">
-      <div className="flex items-center gap-2 mb-6">
-        <Users className="h-6 w-6" />
-        <h1 className="text-2xl font-bold">Student Attendance & Homework</h1>
-      </div>
-
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden bg-cover bg-center">
+      <header className=" flex justify-between items-center bg-white p-8 lg:ml-16 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 sticky top-0 ">
+        <h2 className="text-2xl font-bold flex items-center gap-2">
+          <Users className="h-6 w-6" />
+          <h1 className="text-2xl font-bold">Student Attendance & Homework</h1>
+        </h2>
+      </header>
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md flex items-center gap-2 text-red-700">
+        <div className="mb-6 p-4 bg-red-50 border border-red-200  flex items-center gap-2 text-red-700">
           <AlertCircle className="h-5 w-5" />
           <p>{error}</p>
         </div>
       )}
       {
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:ml-16 px-4 pb-24">
           {DAYS.map((day) => (
             <div key={day} className="col-span-full">
               {/* Day Header */}
-              <h2 className="text-xl font-bold mt-8 mb-4 border-b pb-2">
+              <h2 className="text-xl font-bold  mb-4 border-b pb-2">
                 📅 {day}
               </h2>
 
@@ -177,17 +178,17 @@ const StudentList = () => {
                         key={student.id}
                         className="bg-white rounded-lg shadow-lg overflow-hidden">
                         {/* Card Header */}
-                        <div className="p-4 border-b bg-gray-50">
+                        <div className="p-4 bg-gray-200">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                              <User className="h-5 w-5 text-gray-400" />
-                              <h2 className="font-semibold text-gray-800">
+                              <User className="h-5 w-5 text-black" />
+                              <h2 className="font-semibold text-black">
                                 {student.name}
                               </h2>
                             </div>
 
                             <span
-                              className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm ${
+                              className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-sm ${
                                 student.attendance === 'Present'
                                   ? 'bg-green-100 text-green-600'
                                   : student.attendance === 'Absent'
@@ -256,7 +257,7 @@ const StudentList = () => {
                                   state: { student },
                                 })
                               }
-                              className="flex-1 px-3 py-2 text-sm bg-emerald-500 hover:bg-emerald-600 text-white rounded-md">
+                              className="flex-1 px-3 py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-md">
                               <Calendar className="h-4 w-4 inline mr-1" />
                               Attendance
                             </button>

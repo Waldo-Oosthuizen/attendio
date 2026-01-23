@@ -73,7 +73,7 @@ const Navbar = () => {
         <div className="relative h-16 flex items-center border-b border-white/10">
           <button
             onClick={toggleNav}
-            className={`p-2 text-black hover:bg-black/10 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-black/20 rounded-md transition-all duration-300 ${
+            className={`p-2 text-white bg-slate-700  focus:outline-none focus:ring-2 focus:ring-black/20 rounded-md transition-all duration-300 ${
               isNavOpen ? 'ml-52' : 'ml-3'
             }`}
             aria-label={isNavOpen ? 'Close navigation' : 'Open navigation'}>
@@ -129,7 +129,7 @@ const Navbar = () => {
                 } ${
                   isActive
                     ? 'bg-black/20 text-black/80'
-                    : 'hover:bg-black/10 text-black/80 hover:text-black'
+                    : 'hover:bg-black/10 text-black/80 hover:text-white'
                 }`}
                 aria-current={isActive ? 'page' : undefined}>
                 <span className="flex items-center justify-center w-6">
