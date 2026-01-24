@@ -168,7 +168,7 @@ const Students = () => {
 
         <button
           onClick={handleAddRow}
-          className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-md">
+          className="px-4 py-2 bg-gradient-to-br from-emerald-500 to-emerald-600 hover:bg-emerald-800 text-white rounded-md">
           <Plus className="inline mr-2" />
           Add Student
         </button>
@@ -196,7 +196,7 @@ const Students = () => {
 
         {DAYS.map((day) => (
           <div key={day} className="mb-10">
-            <h3 className="text-lg font-bold border-b mb-3">{day}</h3>
+            <h2 className="text-xl font-bold  mb-4 border-b pb-2">📅 {day}</h2>
 
             {studentsByDay[day].length === 0 ? (
               <p className="text-gray-400">No students scheduled</p>
