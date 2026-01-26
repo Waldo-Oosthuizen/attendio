@@ -13,14 +13,10 @@ body {
     /* green-50 */ #ecfdf5,
     /* emerald-50 */ #f0fdfa /* teal-50 */
   );
-
-  /* bg-cover bg-center */
   background-size: cover;
   background-position: center;
 
-  /* relative overflow-hidden */
   position: relative;
-  overflow: hidden;
 }
 .rbc-header {
   color: white !important;
