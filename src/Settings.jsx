@@ -1,8 +1,8 @@
 // Settings.js
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth } from "./firebase-config";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { auth } from './firebase-config';
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -10,10 +10,10 @@ const Settings = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      alert("You have been successfully signed out!");
-      navigate("/");
+      alert('You have been successfully signed out!');
+      navigate('/');
     } catch (error) {
-      console.error("Logout Failed:", error.message);
+      console.error('Logout Failed:', error.message);
     }
   };
 
@@ -24,7 +24,7 @@ const Settings = () => {
       <div className="border-t pt-6">
         <button
           onClick={handleLogout}
-          className="bg-red text-white py-2 px-4 rounded hover:bg-red-700 transition">
+          className="bg-rose-500 text-white py-2 px-4 rounded hover:bg-rose-600 transition">
           Log Out
         </button>
       </div>

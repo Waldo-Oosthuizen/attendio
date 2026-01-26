@@ -90,7 +90,6 @@ const Schedule = () => {
   const [defaultView, setDefaultView] = useState(Views.DAY);
   const [uid, setUid] = useState(null);
   const [authReady, setAuthReady] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   /* ----------  AUTH HANDSHAKE  ---------- */
   useEffect(() => {
@@ -153,8 +152,8 @@ const Schedule = () => {
   /* ----------  RESPONSIVE VIEW (DAY on mobile)  ---------- */
 
   return (
-    <div className="min-h-screen  dark:bg-gray py-8 px-4 sm:px-6">
-      <div className="shadow-lg rounded-xl p-4 sm:p-8 max-w-full mx-auto lg:ml-16 ml-0 bg-white ">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden bg-cover bg-center">
+      <div className="shadow-lg rounded-lg p-4 sm:p-8 max-w-full mx-auto lg:ml-16 ml-0 bg-white ">
         {!authReady && (
           <p className="mb-4 text-sm text-black-500">
             Checking your account...
@@ -166,7 +165,7 @@ const Schedule = () => {
             page to see them here.
           </p>
         )}
-        <div className="mt-2 h-[calc(100vh -180px)] sm:h-[100vh] mb-4 overflow-y-auto overflow-x-auto">
+        <div className="mt-2 h-[calc(100vh -180px)] sm:h-[100vh] mb-4 overflow-y-auto overflow-x-auto ">
           {' '}
           <Calendar
             localizer={localizer}
@@ -179,7 +178,7 @@ const Schedule = () => {
             endAccessor="end"
             views={{ day: true }}
             defaultView={defaultView}
-            style={{ height: '80vh', width: '100%' }}
+            style={{ height: '90vh', width: '100%' }}
             showMultiDayTimes={true}
             min={new Date(1970, 0, 1, 9, 0)} // 08:00
             max={new Date(1970, 0, 1, 20, 0)} // 20:00

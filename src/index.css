@@ -2,8 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  /* min-h-screen */
+  min-height: 100vh;
+
+  /* bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 */
+  background-image: linear-gradient(
+    to bottom right,
+    #f0fdf4,
+    /* green-50 */ #ecfdf5,
+    /* emerald-50 */ #f0fdfa /* teal-50 */
+  );
+
+  /* bg-cover bg-center */
+  background-size: cover;
+  background-position: center;
+
+  /* relative overflow-hidden */
+  position: relative;
+  overflow: hidden;
+}
 .rbc-header {
-  background: linear-gradient(to right, #5c8d67, #3d7c6f) !important;
   color: white !important;
   font-weight: 600 !important;
   font-size: 16px !important;
@@ -16,17 +35,18 @@
 
 /* Month/Week/Day navigation header */
 .rbc-toolbar {
-  background: linear-gradient(to right, #5c8d67, #3d7c6f) !important;
-  padding: 20px !important;
-  border-radius: 12px !important;
-  margin-bottom: 20px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important; /* Spreads groups to the edges */
+  padding: 24px !important;
+  background-color: #374151;
+  border-top-right-radius: 12px !important;
+  border-top-left-radius: 12px !important;
 }
 
 .rbc-toolbar button {
-  background: rgba(255, 255, 255, 0.2) !important;
   color: white !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border: 1px solid white !important;
   border-radius: 8px !important;
   padding: 8px 16px !important;
   font-weight: 500 !important;
@@ -34,20 +54,50 @@
 }
 
 .rbc-toolbar button:hover {
-  background: rgba(255, 255, 255, 0.3) !important;
+  background: white !important;
+  color: #374151 !important;
   transform: translateY(-1px) !important;
 }
 
-.rbc-toolbar button.rbc-active {
+.rbc-toolbar .rbc-btn-group:first-child button:hover {
   background: white !important;
-  color: #3d7c6f !important;
+  color: #374151 !important;
+  transform: translateY(-1px) !important;
 }
 
+/* Force the label to stay perfectly centered */
 .rbc-toolbar-label {
+  flex-grow: 1 !important;
+  text-align: center !important;
   color: white !important;
-  font-size: 24px !important;
+  font-size: 22px !important; /* Slightly smaller for cleaner look */
   font-weight: 700 !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  margin: 0 1rem !important;
+}
+
+/* Ensure the button groups on the sides take up equal space 
+   so the label stays truly centered */
+.rbc-toolbar .rbc-btn-group {
+  display: flex !important;
+  gap: 0.5rem !important; /* Tightens space between Today/Back/Next */
+  flex: 0 1 auto !important;
+}
+
+/* Remove the "stuck" focus/active state */
+.rbc-toolbar button:focus,
+.rbc-toolbar button:active,
+.rbc-toolbar button:focus:active {
+  outline: none !important;
+  box-shadow: none !important;
+  /* Match your default background so it doesn't change on click */
+  background-color: transparent !important;
+}
+
+/* Ensure the .rbc-active button still keeps its color even when focused */
+.rbc-toolbar button.rbc-active:focus,
+.rbc-toolbar button.rbc-active {
+  background-color: #374151 !important;
+  color: white !important;
 }
 
 .rbc-allday-cell {
@@ -69,7 +119,7 @@
 /* More space between toolbar buttons */
 .rbc-toolbar .rbc-btn-group {
   display: flex;
-  gap: 0.5rem; /* try 0.75rem or 1rem if you want more space */
+  gap: 1rem; /* try 0.75rem or 1rem if you want more space */
 }
 
 /* (Optional) Slightly larger clickable area */
