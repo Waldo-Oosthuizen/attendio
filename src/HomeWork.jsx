@@ -206,7 +206,7 @@ const HomeWork = () => {
               className="
     border rounded-lg p-4
     flex flex-col gap-4
-    sm:flex-row sm:items-center sm:justify-between
+    sm:flex-row sm:items-center sm:justify-between bg-white
   ">
               {/* Homework info */}
               <div className="flex-1">
@@ -233,10 +233,10 @@ const HomeWork = () => {
                 <span
                   className={`text-sm px-3 py-1 rounded-full text-center whitespace-nowrap ${
                     hw.status === 'completed'
-                      ? 'bg-green text-white'
+                      ? 'bg-green-500 text-white'
                       : hw.status === 'partial'
-                        ? 'bg-orange text-white'
-                        : 'bg-red text-white'
+                        ? 'bg-orange-500 text-white'
+                        : 'bg-red-500 text-white'
                   }`}>
                   {hw.status === 'completed'
                     ? 'Practiced'
