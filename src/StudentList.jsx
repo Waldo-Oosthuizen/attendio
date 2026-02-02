@@ -20,6 +20,7 @@ import {
   Users,
   Calendar,
   User,
+  Search,
 } from 'lucide-react';
 
 // For filter
@@ -30,6 +31,7 @@ const StudentList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [updating, setUpdating] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const navigate = useNavigate();
 
@@ -132,7 +134,7 @@ const StudentList = () => {
     );
   }
 
-  // Filter function
+  // Filter function for UI display
   const studentsByDay = DAYS.reduce((acc, day) => {
     acc[day] = students
       .filter((student) => student.day === day)
@@ -143,11 +145,25 @@ const StudentList = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden bg-cover bg-center">
-      <header className=" flex justify-between items-center bg-white p-8 lg:ml-16 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 sticky top-0 ">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
+      <header
+        className="justify-between bg-white p-4 md:p-8
+p-4 md:p-8
+ lg:ml-16 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 flex-col md:flex-row">
+        <div className="flex items-center gap-2">
           <Users className="h-6 w-6" />
           <h1 className="text-2xl font-bold">Student Attendance & Homework</h1>
-        </h2>
+        </div>
+        {/* Search Bar */}
+        <div className="relative md:block mt-4">
+          <Search className="absolute left-3 top-1/2  -translate-y-1/2 w-8 h-4 text-gray-400 " />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 pr-4 py-3 bg-gray-100 rounded-lg border border-transparent focus:border-b-emerald-600 focus:bg-white focus:outline-none transition-all w-[420px] rounded-lg focus:shadow-md "
+          />
+        </div>
       </header>
       {error && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200  flex items-center gap-2 text-red-700">
@@ -170,112 +186,122 @@ const StudentList = () => {
                 </p>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {studentsByDay[day].map((student) => {
-                    const stats = getAttendanceStats(student.attendanceHistory);
+                  {studentsByDay[day]
+                    .filter((student) => {
+                      const query = searchTerm.toLowerCase();
+                      return (
+                        student.name.toLowerCase().includes(query) ||
+                        student.day.toLowerCase().includes(query)
+                      );
+                    })
+                    .map((student) => {
+                      const stats = getAttendanceStats(
+                        student.attendanceHistory
+                      );
 
-                    return (
-                      <div
-                        key={student.id}
-                        className="bg-white rounded-lg shadow-lg overflow-hidden">
-                        {/* Card Header */}
-                        <div className="p-4 border-b border-gray-200">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <User className="h-5 w-5 text-black" />
-                              <h2 className="font-semibold text-black">
-                                {student.name}
-                              </h2>
+                      return (
+                        <div
+                          key={student.id}
+                          className="bg-white rounded-lg shadow-lg overflow-hidden">
+                          {/* Card Header */}
+                          <div className="p-4 border-b border-gray-200">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <User className="h-5 w-5 text-black" />
+                                <h2 className="font-semibold text-black">
+                                  {student.name}
+                                </h2>
+                              </div>
+
+                              <span
+                                className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-sm ${
+                                  student.attendance === 'Present'
+                                    ? 'bg-green-100 text-green-600'
+                                    : student.attendance === 'Absent'
+                                      ? 'bg-red-100 text-red-600'
+                                      : 'bg-gray-100 text-gray-600'
+                                }`}>
+                                {student.attendance === 'Present' && (
+                                  <CheckCircle className="h-4 w-4" />
+                                )}
+                                {student.attendance === 'Absent' && (
+                                  <XCircle className="h-4 w-4" />
+                                )}
+                                {student.attendance || 'Not marked'}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Stats */}
+                          <div className="p-4 bg-white">
+                            <div className="flex justify-around mb-4">
+                              <div className="text-center">
+                                <div className="text-green-600 font-semibold">
+                                  {stats.present}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  Present
+                                </div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-red-600 font-semibold">
+                                  {stats.absent}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  Absent
+                                </div>
+                              </div>
                             </div>
 
-                            <span
-                              className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-sm ${
-                                student.attendance === 'Present'
-                                  ? 'bg-green-100 text-green-600'
-                                  : student.attendance === 'Absent'
-                                    ? 'bg-red-100 text-red-600'
-                                    : 'bg-gray-100 text-gray-600'
-                              }`}>
-                              {student.attendance === 'Present' && (
+                            {/* Buttons */}
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() =>
+                                  handleAttendance(student.id, 'Present')
+                                }
+                                disabled={updating === student.id}
+                                className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-green-600 bg-green-50 rounded-md">
                                 <CheckCircle className="h-4 w-4" />
-                              )}
-                              {student.attendance === 'Absent' && (
-                                <XCircle className="h-4 w-4" />
-                              )}
-                              {student.attendance || 'Not marked'}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Stats */}
-                        <div className="p-4 bg-white">
-                          <div className="flex justify-around mb-4">
-                            <div className="text-center">
-                              <div className="text-green-600 font-semibold">
-                                {stats.present}
-                              </div>
-                              <div className="text-sm text-gray-500">
                                 Present
-                              </div>
-                            </div>
-                            <div className="text-center">
-                              <div className="text-red-600 font-semibold">
-                                {stats.absent}
-                              </div>
-                              <div className="text-sm text-gray-500">
+                              </button>
+
+                              <button
+                                onClick={() =>
+                                  handleAttendance(student.id, 'Absent')
+                                }
+                                disabled={updating === student.id}
+                                className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-md">
+                                <XCircle className="h-4 w-4" />
                                 Absent
-                              </div>
+                              </button>
                             </div>
-                          </div>
 
-                          {/* Buttons */}
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() =>
-                                handleAttendance(student.id, 'Present')
-                              }
-                              disabled={updating === student.id}
-                              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-green-600 bg-green-50 rounded-md">
-                              <CheckCircle className="h-4 w-4" />
-                              Present
-                            </button>
+                            <div className="flex gap-2 mt-3">
+                              <button
+                                onClick={() =>
+                                  navigate(`/attendance/${student.id}`, {
+                                    state: { student },
+                                  })
+                                }
+                                className="flex-1 px-3 py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-md">
+                                <Calendar className="h-4 w-4 inline mr-1" />
+                                Attendance
+                              </button>
 
-                            <button
-                              onClick={() =>
-                                handleAttendance(student.id, 'Absent')
-                              }
-                              disabled={updating === student.id}
-                              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-md">
-                              <XCircle className="h-4 w-4" />
-                              Absent
-                            </button>
-                          </div>
-
-                          <div className="flex gap-2 mt-3">
-                            <button
-                              onClick={() =>
-                                navigate(`/attendance/${student.id}`, {
-                                  state: { student },
-                                })
-                              }
-                              className="flex-1 px-3 py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-md">
-                              <Calendar className="h-4 w-4 inline mr-1" />
-                              Attendance
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                navigate(`/homework/${student.id}`, {
-                                  state: { student },
-                                })
-                              }
-                              className="flex-1 px-3 py-2 text-sm bg-indigo-500 hover:bg-indigo-600 text-white rounded-md">
-                              📚 Homework
-                            </button>
+                              <button
+                                onClick={() =>
+                                  navigate(`/homework/${student.id}`, {
+                                    state: { student },
+                                  })
+                                }
+                                className="flex-1 px-3 py-2 text-sm bg-indigo-500 hover:bg-indigo-600 text-white rounded-md">
+                                📚 Homework
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
               )}
             </div>
