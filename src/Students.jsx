@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import StudentCard from './StudentCard';
-import { Plus, GraduationCap } from 'lucide-react';
+import { Plus, GraduationCap, Search, Filter, SortAsc } from 'lucide-react';
 import {
   collection,
   addDoc,
@@ -14,6 +14,7 @@ import {
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { db } from './firebase-config';
 import { addOwnerIdToExistingDocs } from './utils/updateOwnerId';
+import FilterBar from './FilterBar';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
@@ -158,21 +159,40 @@ const Students = () => {
     return acc;
   }, {});
 
+  /* ---------- FILTER ---------- */
+  const [searchTerm, setSearchTerm] = useState('');
+  /* ---------- FILTER BY DAY ---------- */
+  const [dayFilter, setDayFilter] = useState('');
   /* ---------- RENDER ---------- */
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden bg-cover bg-center">
-      <header className="flex justify-between items-center bg-white p-8 lg:ml-16 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 sticky top-0 ">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-          <GraduationCap className="text-2xl font-bold" /> Students
-        </h2>
-
-        <button
-          onClick={handleAddRow}
-          className="px-4 py-2 bg-gradient-to-br from-emerald-500 to-emerald-600 hover:bg-emerald-800 text-white rounded-md">
-          <Plus className="inline mr-2" />
-          Add Student
-        </button>
-      </header>
+      <div
+        className="flex flex-col gap-4
+  bg-white p-8 lg:ml-16 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200">
+        <div className="flex justify-between w-full">
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <GraduationCap className="text-2xl font-bold" /> Students
+          </h2>
+          <button
+            onClick={handleAddRow}
+            className="px-4 py-2 mt-4 bg-gradient-to-br from-emerald-500 to-emerald-600 hover:bg-emerald-800 text-white rounded-md mr-2">
+            <Plus className="inline mr-2" />
+            Add Student
+          </button>
+        </div>
+        <div className="w-full  flex flex-col gap-4  md:flex-row ">
+          {' '}
+          <div className="relative  w-full ">
+            {/* Use the new component and pass all 4 props */}
+            <FilterBar
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              dayFilter={dayFilter}
+              setDayFilter={setDayFilter}
+            />
+          </div>
+        </div>
+      </div>
       <div className="lg:ml-16 px-4 pb-24 ">
         {unscheduledStudents.length > 0 && (
           <div className="mb-10 ">
@@ -193,28 +213,40 @@ const Students = () => {
             </div>
           </div>
         )}
+        {DAYS
+          // 1. Filter the DAYS array itself based on the dropdown selection
+          .filter((day) =>
+            dayFilter === '' || dayFilter === 'all' ? true : day === dayFilter
+          )
+          .map((day) => (
+            <div key={day} className="mb-10">
+              <h2 className="text-xl font-bold mb-4 border-b pb-2">📅 {day}</h2>
 
-        {DAYS.map((day) => (
-          <div key={day} className="mb-10">
-            <h2 className="text-xl font-bold  mb-4 border-b pb-2">📅 {day}</h2>
-
-            {studentsByDay[day].length === 0 ? (
-              <p className="text-gray-400">No students scheduled</p>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {studentsByDay[day].map((student) => (
-                  <StudentCard
-                    key={student.localId}
-                    student={student}
-                    handleInputChange={handleInputChange}
-                    toggleEditMode={toggleEditMode}
-                    handleRemoveRow={handleRemoveRow}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
+              {studentsByDay[day].length === 0 ? (
+                <p className="text-gray-400">No students scheduled</p>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {studentsByDay[day]
+                    .filter((student) => {
+                      const query = searchTerm.toLowerCase();
+                      return (
+                        student.name.toLowerCase().includes(query) ||
+                        student.instrument.toLowerCase().includes(query)
+                      );
+                    })
+                    .map((student) => (
+                      <StudentCard
+                        key={student.localId}
+                        student={student}
+                        handleInputChange={handleInputChange}
+                        toggleEditMode={toggleEditMode}
+                        handleRemoveRow={handleRemoveRow}
+                      />
+                    ))}
+                </div>
+              )}
+            </div>
+          ))}
       </div>
     </div>
   );

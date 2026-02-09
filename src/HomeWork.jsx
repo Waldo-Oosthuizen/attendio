@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useLocation, Link } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { db } from './firebase-config';
 import {
   collection,
@@ -16,7 +16,6 @@ import { getAuth } from 'firebase/auth';
 import { Notebook, ArrowLeft } from 'lucide-react';
 
 const HomeWork = () => {
-  // Create state for homework
   const { studentId } = useParams();
   const auth = getAuth();
 
@@ -28,6 +27,7 @@ const HomeWork = () => {
   const [dueDate, setDueDate] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   // Fetch homework for this student
   const fetchHomework = async () => {
@@ -137,12 +137,13 @@ const HomeWork = () => {
             </h1>
           </div>
         </div>
-        <Link
+        <button
+          onClick={() => navigate(-1)}
           to="/studentList"
           className="inline-flex items-center gap-1 text-sm px-3 py-2 border rounded-md hover:bg-gray-50">
           <ArrowLeft className="h-4 w-4" />
           Back
-        </Link>
+        </button>
       </div>
 
       {error && (

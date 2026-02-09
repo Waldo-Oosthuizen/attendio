@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { db } from './firebase-config';
 import {
   collection,
@@ -22,6 +22,7 @@ import {
   User,
   Search,
 } from 'lucide-react';
+import FilterBar from './FilterBar';
 
 // For filter
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -32,6 +33,13 @@ const StudentList = () => {
   const [error, setError] = useState(null);
   const [updating, setUpdating] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  /* ---------- FILTER BY DAY ---------- */
+  const [searchParams, setSearchParams] = useSearchParams();
+  const dayFilter = searchParams.get('day') || 'all';
+
+  const handleDayChange = (newDay) => {
+    setSearchParams({ day: newDay });
+  };
 
   const navigate = useNavigate();
 
@@ -146,22 +154,19 @@ const StudentList = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden bg-cover bg-center">
       <header
-        className="justify-between bg-white p-4 md:p-8
-p-4 md:p-8
- lg:ml-16 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 flex-col md:flex-row">
-        <div className="flex items-center gap-2">
+        className="  flex flex-col gap-4
+  bg-white p-8 lg:ml-16 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 ">
+        <div className="flex items-center gap-2 w-full">
           <Users className="h-6 w-6" />
           <h1 className="text-2xl font-bold">Student Attendance & Homework</h1>
         </div>
-        {/* Search Bar */}
-        <div className="relative md:block mt-4">
-          <Search className="absolute left-3 top-1/2  -translate-y-1/2 w-8 h-4 text-gray-400 " />
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-3 bg-gray-100 rounded-lg border border-transparent focus:border-b-emerald-600 focus:bg-white focus:outline-none transition-all w-[420px] rounded-lg focus:shadow-md "
+        {/*Filter bar */}
+        <div className="mt-4 md:mt-0">
+          <FilterBar
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            dayFilter={dayFilter}
+            setDayFilter={handleDayChange}
           />
         </div>
       </header>
@@ -173,7 +178,9 @@ p-4 md:p-8
       )}
       {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:ml-16 px-4 pb-24">
-          {DAYS.map((day) => (
+          {DAYS.filter((day) =>
+            dayFilter === 'all' || dayFilter === '' ? true : day === dayFilter
+          ).map((day) => (
             <div key={day} className="col-span-full">
               {/* Day Header */}
               <h2 className="text-xl font-bold  mb-4 border-b pb-2">

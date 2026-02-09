@@ -5,15 +5,7 @@ import { db } from './firebase-config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 
-import {
-  Users,
-  Calendar,
-  Settings,
-  Menu,
-  Bell,
-  Search,
-  User,
-} from 'lucide-react';
+import { Users, Calendar, Settings, User } from 'lucide-react';
 
 const DashboardCard = ({
   title,
@@ -69,17 +61,7 @@ const DashboardBanner = () => (
         Welcome back! Here's what's happening today.
       </p>
     </div>
-    <div className="flex items-center gap-3 ml-auto mr-10">
-      {/* Search Bar */}
-      <div className="relative hidden md:block ">
-        <Search className="absolute left-3 top-1/2  -translate-y-1/2 w-8 h-4 text-gray-400 " />
-        <input
-          type="text"
-          placeholder="Search..."
-          className="pl-10 pr-4 py-3 bg-gray-100 rounded-lg border border-transparent focus:border-b-emerald-600 focus:bg-white focus:outline-none transition-all w-[420px] rounded-lg focus:shadow-md "
-        />
-      </div>
-    </div>
+    <div className="flex items-center gap-3 ml-auto mr-10"></div>
   </div>
 );
 
