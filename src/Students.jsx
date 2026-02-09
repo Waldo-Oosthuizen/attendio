@@ -177,7 +177,7 @@ const Students = () => {
             onClick={handleAddRow}
             className="px-4 py-2 mt-4 bg-gradient-to-br from-emerald-500 to-emerald-600 hover:bg-emerald-800 text-white rounded-md mr-2">
             <Plus className="inline mr-2" />
-            Add Student
+            Add
           </button>
         </div>
         <div className="w-full  flex flex-col gap-4  md:flex-row ">
