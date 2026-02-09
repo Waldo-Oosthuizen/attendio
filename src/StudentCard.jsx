@@ -39,7 +39,10 @@ const StudentCard = ({
             {student.name || 'New Student'}
           </h2>
         </div>
-        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-sm bg-gray-100 text-gray-600">
+        <span
+          className={
+            'inline-flex items-center gap-1 px-2 py-1 rounded-lg text-sm bg-gray-100 text-white bg-emerald-400'
+          }>
           {student.day || 'No Day Set'}
         </span>
       </div>
