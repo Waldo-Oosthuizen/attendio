@@ -10,7 +10,7 @@ import { getFirestore } from 'firebase/firestore';
 
 // ✅ Correct Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyC3DZIHW49UVq2uYJt5M8SXbgo3nVfXnjU',
+  apiKey: 'AIzaSyA72hBNmeeZNWsDVFsS6eVU0vM47NUA5OY',
   authDomain: 'fretnot-attendance-b3026.firebaseapp.com',
   projectId: 'fretnot-attendance-b3026',
   storageBucket: 'fretnot-attendance-b3026.appspot.com',
