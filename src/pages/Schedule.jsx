@@ -15,7 +15,7 @@ import enZA from 'date-fns/locale/en-ZA';
 
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { db } from './firebase-config';
+import { db } from '../config/firebase-config';
 
 const locales = {
   'en-ZA': enZA,

@@ -10,22 +10,22 @@ import {
 // - `Routes` groups all route definitions.
 // - `Route` defines individual routes.
 
-import SignUp from './signUp';
-import Login from './login';
-import Home from './Home';
-import Students from './Students';
-import StudentList from './StudentList';
-import HomeWork from './HomeWork';
-import Schedule from './Schedule';
-import Settings from './Settings';
-import AttendanceHistory from './AttendanceHistory';
-import PrivateRoute from './PrivateRoute'; // Importing a custom `PrivateRoute` component to restrict access to protected routes
+import SignUp from './pages/SignUp';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import Students from './pages/Students';
+import StudentList from './components/StudentList';
+import HomeWork from './pages/HomeWork';
+import Schedule from './pages/Schedule';
+import Settings from './pages/Settings';
+import AttendanceHistory from './pages/AttendanceHistory';
+import PrivateRoute from './routes/PrivateRoute'; // Importing a custom `PrivateRoute` component to restrict access to protected routes
 
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase-config';
+import { auth } from './config/firebase-config';
 import { useEffect } from 'react';
 
-import Landing from './Landing';
+import Landing from './pages/Landing';
 
 const App = () => {
   const [showSignUp, setShowSignUp] = useState(false);

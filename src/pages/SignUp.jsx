@@ -1,23 +1,23 @@
 // Importing required dependencies and modules
-import React, { useState, useEffect } from "react"; // React hooks for state management and side effects
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth"; // Firebase functions for user sign-up and Google authentication
-import { auth, googleProvider } from "./firebase-config"; // Firebase authentication and Google provider configuration
-import { FcGoogle } from "react-icons/fc"; // React icon for Google logo used in the Google sign-up button
-import { Eye, EyeOff, Loader } from "lucide-react"; // Icons for password visibility toggle and a loading spinner
-import background from "./assets/bg.jpeg"; // Background image for the Sign-Up page
+import React, { useState, useEffect } from 'react'; // React hooks for state management and side effects
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth'; // Firebase functions for user sign-up and Google authentication
+import { auth, googleProvider } from '../config/firebase-config'; // Firebase authentication and Google provider configuration
+import { FcGoogle } from 'react-icons/fc'; // React icon for Google logo used in the Google sign-up button
+import { Eye, EyeOff, Loader } from 'lucide-react'; // Icons for password visibility toggle and a loading spinner
+import background from '../assets/bg.jpeg'; // Background image for the Sign-Up page
 
 // SignUp component declaration
 const SignUp = ({ setShowSignUp }) => {
   // State to manage user input for the form
-  const [formData, setFormData] = useState({ email: "", password: "" }); // Stores email and password inputs
+  const [formData, setFormData] = useState({ email: '', password: '' }); // Stores email and password inputs
   const [validationErrors, setValidationErrors] = useState({}); // Tracks validation errors for each field
-  const [error, setError] = useState(""); // Tracks errors related to Firebase or other issues
+  const [error, setError] = useState(''); // Tracks errors related to Firebase or other issues
   const [isLoading, setIsLoading] = useState(false); // Tracks the loading state for API requests
   const [showPassword, setShowPassword] = useState(false); // Toggles password visibility in the input field
 
   // Clear error messages when form data changes
   useEffect(() => {
-    if (error) setError(""); // Reset error message when user starts typing again
+    if (error) setError(''); // Reset error message when user starts typing again
   }, [formData]);
 
   // Function to validate the form fields
@@ -27,16 +27,16 @@ const SignUp = ({ setShowSignUp }) => {
 
     // Check if the email field is empty or invalid
     if (!formData.email) {
-      errors.email = "Email is required";
+      errors.email = 'Email is required';
     } else if (!emailRegex.test(formData.email)) {
-      errors.email = "Please enter a valid email";
+      errors.email = 'Please enter a valid email';
     }
 
     // Check if the password field is empty or too short
     if (!formData.password) {
-      errors.password = "Password is required";
+      errors.password = 'Password is required';
     } else if (formData.password.length < 6) {
-      errors.password = "Password must be at least 6 characters";
+      errors.password = 'Password must be at least 6 characters';
     }
 
     setValidationErrors(errors); // Update validation errors state
@@ -50,7 +50,7 @@ const SignUp = ({ setShowSignUp }) => {
 
     // Clear validation error for the field being updated
     if (validationErrors[name]) {
-      setValidationErrors((prev) => ({ ...prev, [name]: "" }));
+      setValidationErrors((prev) => ({ ...prev, [name]: '' }));
     }
   };
 
@@ -69,7 +69,7 @@ const SignUp = ({ setShowSignUp }) => {
         formData.email,
         formData.password
       );
-      setFormData({ email: "", password: "" }); // Reset the form inputs on successful sign-up
+      setFormData({ email: '', password: '' }); // Reset the form inputs on successful sign-up
     } catch (err) {
       const errorMessage = getFirebaseErrorMessage(err.code); // Convert Firebase error code to a user-friendly message
       setError(errorMessage); // Display the error message
@@ -95,12 +95,12 @@ const SignUp = ({ setShowSignUp }) => {
   // Convert Firebase error codes into user-friendly error messages
   const getFirebaseErrorMessage = (errorCode) => {
     switch (errorCode) {
-      case "auth/email-already-in-use":
-        return "This email is already registered."; // Error for duplicate email registration
-      case "auth/weak-password":
-        return "Password must be at least 6 characters."; // Error for weak password
+      case 'auth/email-already-in-use':
+        return 'This email is already registered.'; // Error for duplicate email registration
+      case 'auth/weak-password':
+        return 'Password must be at least 6 characters.'; // Error for weak password
       default:
-        return "An error occurred. Please try again."; // Generic error message
+        return 'An error occurred. Please try again.'; // Generic error message
     }
   };
 
@@ -111,7 +111,7 @@ const SignUp = ({ setShowSignUp }) => {
       className="flex items-center justify-center h-screen text-center p-5"
       style={{
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${background})`, // Overlay to darken the background image
-        backgroundSize: "cover", // Ensure the image covers the entire container
+        backgroundSize: 'cover', // Ensure the image covers the entire container
       }}>
       <div className="max-w-md w-full space-y-8 bg-white  p-8 rounded-xl shadow-2xl">
         {/* Page title */}
@@ -141,7 +141,7 @@ const SignUp = ({ setShowSignUp }) => {
               onChange={handleChange}
               placeholder="Email address"
               className={`appearance-none relative block w-full px-3 py-2 border ${
-                validationErrors.email ? "border-red-500" : "border-gray-300"
+                validationErrors.email ? 'border-red-500' : 'border-gray-300'
               } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
             />
             {validationErrors.email && (
@@ -152,13 +152,13 @@ const SignUp = ({ setShowSignUp }) => {
           {/* Password input field */}
           <div className="relative">
             <input
-              type={showPassword ? "text" : "password"} // Toggle password visibility
+              type={showPassword ? 'text' : 'password'} // Toggle password visibility
               name="password"
               value={formData.password}
               onChange={handleChange}
               placeholder="Password"
               className={`appearance-none relative block w-full px-3 py-2 border ${
-                validationErrors.password ? "border-red-500" : "border-gray-300"
+                validationErrors.password ? 'border-red-500' : 'border-gray-300'
               } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
             />
             {/* Button to toggle password visibility */}
@@ -166,7 +166,7 @@ const SignUp = ({ setShowSignUp }) => {
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-              aria-label={showPassword ? "Hide password" : "Show password"}>
+              aria-label={showPassword ? 'Hide password' : 'Show password'}>
               {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
             {validationErrors.password && (
@@ -184,7 +184,7 @@ const SignUp = ({ setShowSignUp }) => {
             {isLoading ? (
               <Loader className="animate-spin mx-auto" /> // Show loading spinner if isLoading is true
             ) : (
-              "Sign Up"
+              'Sign Up'
             )}
           </button>
         </form>
@@ -211,7 +211,7 @@ const SignUp = ({ setShowSignUp }) => {
 
         {/* Link to switch to login */}
         <p className="mt-2 text-center text-sm text-gray-600">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <button
             onClick={() => setShowSignUp(false)} // Call function to switch to login page
             className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150">

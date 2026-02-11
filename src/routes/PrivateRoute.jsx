@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { auth } from "./firebase-config";
-import Navbar from "./Navbar";
+import React, { useEffect, useState } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { auth } from '../config/firebase-config';
+import Navbar from '../components/Navbar';
 
 const PrivateRoute = ({ children }) => {
   const location = useLocation(); // Get current location
 
   // Use localStorage to initialize authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(
-    localStorage.getItem("isAuthenticated") === "true"
+    localStorage.getItem('isAuthenticated') === 'true'
   );
   const [isLoading, setIsLoading] = useState(true);
 
@@ -17,17 +17,17 @@ const PrivateRoute = ({ children }) => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setIsAuthenticated(true);
-        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem('isAuthenticated', 'true');
       } else {
         setIsAuthenticated(false);
-        localStorage.removeItem("isAuthenticated");
+        localStorage.removeItem('isAuthenticated');
       }
       setIsLoading(false);
     });
 
     // Check localStorage while waiting for Firebase
-    const persistedAuth = localStorage.getItem("isAuthenticated");
-    if (persistedAuth === "true") {
+    const persistedAuth = localStorage.getItem('isAuthenticated');
+    if (persistedAuth === 'true') {
       setIsAuthenticated(true);
     }
 
@@ -36,7 +36,7 @@ const PrivateRoute = ({ children }) => {
 
   if (isLoading) {
     // Only show loading if we don't have a persisted auth state
-    if (localStorage.getItem("isAuthenticated") === "true") {
+    if (localStorage.getItem('isAuthenticated') === 'true') {
       return (
         <div>
           <Navbar />

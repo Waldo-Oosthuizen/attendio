@@ -132,7 +132,7 @@ const Navbar = () => {
         {/* Footer */}
         {isNavOpen && (
           <div className="mt-auto p-4 border-t border-slate-200 text-sm text-slate-600">
-            © 2025 Fretnot Music School
+            © 2026 Staccato
           </div>
         )}
       </nav>

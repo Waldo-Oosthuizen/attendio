@@ -1,6 +1,6 @@
 import { getDocs, updateDoc, doc, collection } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import { db } from '../firebase-config';
+import { db } from '../config/firebase-config';
 
 export const addOwnerIdToExistingDocs = async () => {
   const auth = getAuth();

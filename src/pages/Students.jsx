@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import StudentCard from './StudentCard';
-import { Plus, GraduationCap, Search, Filter, SortAsc } from 'lucide-react';
+import StudentCard from '../components/StudentCard';
+import { Plus, GraduationCap } from 'lucide-react';
 import {
   collection,
   addDoc,
@@ -12,9 +12,9 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
-import { db } from './firebase-config';
-import { addOwnerIdToExistingDocs } from './utils/updateOwnerId';
-import FilterBar from './FilterBar';
+import { db } from '../config/firebase-config';
+import { addOwnerIdToExistingDocs } from '../utils/updateOwnerId';
+import FilterBar from '../components/FilterBar';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 

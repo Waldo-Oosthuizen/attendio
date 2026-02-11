@@ -1,7 +1,7 @@
 import React from 'react'; // Import React library for creating React components
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook from react-router-dom for navigation
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from './firebase-config';
+import { db } from '../config/firebase-config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 
@@ -51,7 +51,7 @@ const DashboardCard = ({
  * Displays a banner at the top of the dashboard with a welcome message.
  */
 const DashboardBanner = () => (
-  <div className="relative  lg:ml-16 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 sticky top-0 w-[95vw]">
+  <div className="relative  lg:ml-18 md:ml-20 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 sticky top-0 ">
     {/* Tailwind classes:
      */}
     <div className="p-4 flex-col">
@@ -123,9 +123,9 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden bg-cover bg-center">
       <DashboardBanner />
-      <main className="lg:ml-25 md:ml-20 mb-32">
+      <main className="lg:pl-18 md:pl-20 pb-24 lg:pb-8">
         {/* Grid container for dashboard cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-[92vw] mb-8 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {dashboardItems.map((item, index) => (
             <DashboardCard
               key={index} // Unique key for each card
