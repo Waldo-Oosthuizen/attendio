@@ -1,5 +1,5 @@
 // Importing required dependencies and modules
-import React, { useState, useEffect } from 'react'; // React hooks for state management and side effects
+import React, { useState, useCallback } from 'react'; // React hooks for state management and side effects
 import PropTypes from 'prop-types';
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth'; // Firebase functions for user sign-up and Google authentication
 import { auth, googleProvider } from '../config/firebase-config'; // Firebase authentication and Google provider configuration
@@ -16,13 +16,8 @@ const SignUp = ({ setShowSignUp }) => {
   const [isLoading, setIsLoading] = useState(false); // Tracks the loading state for API requests
   const [showPassword, setShowPassword] = useState(false); // Toggles password visibility in the input field
 
-  // Clear error messages when form data changes
-  useEffect(() => {
-    if (error) setError(''); // Reset error message when user starts typing again
-  }, [formData]);
-
   // Function to validate the form fields
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     const errors = {}; // Object to collect validation errors
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex pattern for validating email format
 
@@ -42,7 +37,7 @@ const SignUp = ({ setShowSignUp }) => {
 
     setValidationErrors(errors); // Update validation errors state
     return Object.keys(errors).length === 0; // Return true if no validation errors
-  };
+  }, [formData]);
 
   // Handle input changes in the form fields
   const handleChange = (e) => {
@@ -225,7 +220,7 @@ const SignUp = ({ setShowSignUp }) => {
 };
 
 // Prop Validation
-SignUp.PropTypes = {
+SignUp.propTypes = {
   setShowSignUp: PropTypes.func.isRequired,
 };
 
