@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { db } from '../config/firebase-config';
 import {
@@ -30,7 +30,7 @@ const HomeWork = () => {
   const navigate = useNavigate();
 
   // Fetch homework for this student
-  const fetchHomework = async () => {
+  const fetchHomework = useCallback(async () => {
     if (!auth.currentUser) {
       console.log('No authenticated user');
       return;
@@ -59,11 +59,11 @@ const HomeWork = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [auth.currentUser, studentId]);
 
   useEffect(() => {
     fetchHomework();
-  }, [studentId]);
+  }, [fetchHomework]);
 
   // Assign homework function
   const assignHomework = async () => {
