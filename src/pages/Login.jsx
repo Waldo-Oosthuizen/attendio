@@ -249,6 +249,6 @@ const Login = ({ setShowSignUp }) => {
 };
 
 Login.propTypes = {
-  setShowSignUp: PropTypes.bool,
+  setShowSignUp: PropTypes.func.isRequired,
 };
 export default Login;
