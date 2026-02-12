@@ -40,7 +40,7 @@ const Navbar = () => {
       icon: <IoPeople className="h-6 w-6" />,
     },
     {
-      path: '/studentList',
+      path: '/StudentManagement',
       label: 'Attendance',
       icon: <HiOutlineClipboardList className="h-6 w-6" />,
     },

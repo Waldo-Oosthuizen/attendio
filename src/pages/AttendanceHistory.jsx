@@ -74,7 +74,7 @@ const AttendanceHistory = () => {
     return (
       <div className="max-w-3xl mx-auto my-8 px-4">
         <Link
-          to="/studentList"
+          to="/studentManagement"
           className="inline-flex items-center gap-2 text-sm text-blue-600 mb-4">
           <ArrowLeft className="h-4 w-4" />
           Back to students
@@ -96,7 +96,7 @@ const AttendanceHistory = () => {
         </div>
 
         <Link
-          to="/studentList"
+          to="/studentManagement"
           className="inline-flex items-center gap-1 text-sm px-3 py-2 border rounded-md hover:bg-gray-50">
           <ArrowLeft className="h-4 w-4" />
           Back

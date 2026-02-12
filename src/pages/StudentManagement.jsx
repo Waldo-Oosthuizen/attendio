@@ -20,14 +20,13 @@ import {
   Users,
   Calendar,
   User,
-  Search,
 } from 'lucide-react';
-import FilterBar from './FilterBar';
+import FilterBar from '../components/FilterBar';
 
 // For filter
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
-const StudentList = () => {
+const StudentManagement = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -319,4 +318,4 @@ const StudentList = () => {
   );
 };
 
-export default StudentList;
+export default StudentManagement;

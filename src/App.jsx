@@ -14,7 +14,7 @@ import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Students from './pages/Students';
-import StudentList from './components/StudentList';
+import StudentManagement from './pages/StudentManagement';
 import HomeWork from './pages/HomeWork';
 import Schedule from './pages/Schedule';
 import Settings from './pages/Settings';
@@ -85,10 +85,10 @@ const App = () => {
         />
 
         <Route
-          path="/studentList"
+          path="/StudentManagement"
           element={
             <PrivateRoute>
-              <StudentList />
+              <StudentManagement />
             </PrivateRoute>
           }></Route>
 
