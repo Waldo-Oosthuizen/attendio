@@ -1,12 +1,13 @@
 // Importing required dependencies and modules
 import React, { useState, useEffect } from 'react'; // React hooks for state management and side effects
+import PropTypes from 'prop-types';
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth'; // Firebase functions for user sign-up and Google authentication
 import { auth, googleProvider } from '../config/firebase-config'; // Firebase authentication and Google provider configuration
 import { FcGoogle } from 'react-icons/fc'; // React icon for Google logo used in the Google sign-up button
 import { Eye, EyeOff, Loader } from 'lucide-react'; // Icons for password visibility toggle and a loading spinner
 import background from '../assets/bg.jpeg'; // Background image for the Sign-Up page
 
-// SignUp component declaration
+// SignUp component
 const SignUp = ({ setShowSignUp }) => {
   // State to manage user input for the form
   const [formData, setFormData] = useState({ email: '', password: '' }); // Stores email and password inputs
@@ -221,6 +222,11 @@ const SignUp = ({ setShowSignUp }) => {
       </div>
     </div>
   );
+};
+
+// Prop Validation
+SignUp.PropTypes = {
+  setShowSignUp: PropTypes.func.isRequired,
 };
 
 // Exporting the SignUp component for use in other parts of the app
