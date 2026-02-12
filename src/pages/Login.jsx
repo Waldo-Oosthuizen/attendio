@@ -1,4 +1,4 @@
-// Import necessary modules
+// Fix errors on Login
 import React, { useState, useEffect } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import {
@@ -10,6 +10,7 @@ import { auth, googleProvider } from '../config/firebase-config';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Loader } from 'lucide-react';
 import background from '../assets/bg.jpeg';
+import PropTypes from 'prop-types';
 
 const Login = ({ setShowSignUp }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -240,7 +241,7 @@ const Login = ({ setShowSignUp }) => {
 
         {/* Sign-up Link */}
         <p className="mt-2 text-center text-sm text-gray-600">
-          Don't have an account?{' '}
+          {"Don't have an account?"}
           <button
             onClick={() => setShowSignUp(true)}
             className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150">
@@ -252,4 +253,7 @@ const Login = ({ setShowSignUp }) => {
   );
 };
 
+Login.propTypes = {
+  setShowSignUp: PropTypes.bool,
+};
 export default Login;
