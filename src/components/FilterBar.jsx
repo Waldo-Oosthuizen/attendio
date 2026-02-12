@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search, Filter } from 'lucide-react';
+import PropTypes from 'prop-types';
 
 const FilterBar = ({ searchTerm, setSearchTerm, dayFilter, setDayFilter }) => {
   return (
@@ -37,4 +38,11 @@ const FilterBar = ({ searchTerm, setSearchTerm, dayFilter, setDayFilter }) => {
   );
 };
 
+// Prop Validation
+FilterBar.propTypes = {
+  searchTerm: PropTypes.string.isRequired,
+  setSearchTerm: PropTypes.func.isRequired,
+  dayFilter: PropTypes.string.isRequired,
+  setDayFilter: PropTypes.func.isRequired,
+};
 export default FilterBar;

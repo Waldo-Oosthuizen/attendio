@@ -4,8 +4,8 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-
 import { Users, Calendar, Settings, User } from 'lucide-react';
+import PropTypes from 'prop-types';
 
 const DashboardCard = ({
   title,
@@ -46,6 +46,14 @@ const DashboardCard = ({
   </button>
 );
 
+// Prop Validation
+DashboardCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
+  onClick: PropTypes.func, // Validates the function
+  bgColor: PropTypes.string,
+  icon: PropTypes.elementType, // "elementType" is used for components/icons
+};
 /**
  * DashboardBanner Component
  * Displays a banner at the top of the dashboard with a welcome message.
@@ -103,7 +111,7 @@ const Home = () => {
     {
       title: 'Manage Students',
       description: 'Mark attendance and assign homework',
-      onClick: () => navigate('/studentList'), // Navigate to the "attendance" page on click
+      onClick: () => navigate('/studentManagement'), // Navigate to the "attendance" page on click
       icon: Users,
     },
     {

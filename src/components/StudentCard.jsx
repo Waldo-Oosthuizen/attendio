@@ -9,6 +9,8 @@ import {
   Clock,
 } from 'lucide-react';
 
+import PropTypes from 'prop-types';
+
 /* ---------- Helpers ---------- */
 const formatTime12 = (hhmm) => {
   if (!hhmm) return '';
@@ -176,6 +178,14 @@ const StudentCard = ({
       </div>
     </div>
   );
+};
+
+// Prop Validation
+StudentCard.propTypes = {
+  student: PropTypes.object.isRequired,
+  handleInputChange: PropTypes.func.isRequired,
+  toggleEditMode: PropTypes.func.isRequired,
+  handleRemoveRow: PropTypes.func.isRequired,
 };
 
 export default StudentCard;
