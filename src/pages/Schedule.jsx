@@ -87,9 +87,9 @@ function buildWeeklyEventsFromStudents(students, weeksAhead = 12) {
 
 const Schedule = () => {
   const [events, setEvents] = useState([]);
-  const [defaultView, setDefaultView] = useState(Views.DAY);
   const [uid, setUid] = useState(null);
   const [authReady, setAuthReady] = useState(false);
+  const defaultView = Views.DAY;
 
   /* ----------  AUTH HANDSHAKE  ---------- */
   useEffect(() => {
