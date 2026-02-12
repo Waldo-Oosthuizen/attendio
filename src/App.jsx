@@ -5,10 +5,6 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-// Importing React Router components:
-// - `Router` is the main wrapper for enabling routing in the app.
-// - `Routes` groups all route definitions.
-// - `Route` defines individual routes.
 
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
