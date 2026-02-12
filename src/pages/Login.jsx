@@ -1,5 +1,5 @@
 // Fix errors on Login
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import {
   signInWithEmailAndPassword,
@@ -23,10 +23,10 @@ const Login = ({ setShowSignUp }) => {
   /* ----------  CLEAR ERRORS ON INPUT  ---------- */
   useEffect(() => {
     if (error) setError('');
-  }, [formData]);
+  }, [formData, error]);
 
   /* ----------  VALIDATION  ---------- */
-  const validateForm = () => {
+  const validateForm = useCallback(async () => {
     const errors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -44,7 +44,7 @@ const Login = ({ setShowSignUp }) => {
 
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
-  };
+  }, [formData]);
 
   /* ----------  HANDLE INPUT  ---------- */
   const handleChange = (e) => {
