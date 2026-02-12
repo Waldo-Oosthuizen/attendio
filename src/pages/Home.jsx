@@ -66,7 +66,7 @@ const DashboardBanner = () => (
       {/* Welcome message content */}
       <h1 className="text-2xl font-bold mb-2 ">Dashboard</h1>
       <p className="text-sm text-gray-500 mt-1">
-        Welcome back! Here's what's happening today.
+        {"Welcome back! Here's what's happening today."}
       </p>
     </div>
     <div className="flex items-center gap-3 ml-auto mr-10"></div>
