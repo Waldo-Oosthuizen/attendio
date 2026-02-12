@@ -63,7 +63,7 @@ const HomeWork = () => {
 
   useEffect(() => {
     fetchHomework();
-  }, [studentId]); // Removed auth from dependencies
+  }, [studentId]);
 
   // Assign homework function
   const assignHomework = async () => {
@@ -119,7 +119,7 @@ const HomeWork = () => {
         prev.map((hw) => (hw.id === homeworkId ? { ...hw, status } : hw))
       );
     } catch (err) {
-      console.error('Error updating homework');
+      console.error('Error updating homework', err);
       setError('Failed to update homework status');
     }
   };
@@ -139,7 +139,7 @@ const HomeWork = () => {
         </div>
         <button
           onClick={() => navigate(-1)}
-          to="/studentList"
+          to="/studentManagemen"
           className="inline-flex items-center gap-1 text-sm px-3 py-2 border rounded-md hover:bg-gray-50">
           <ArrowLeft className="h-4 w-4" />
           Back
