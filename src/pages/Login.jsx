@@ -62,16 +62,11 @@ const Login = ({ setShowSignUp }) => {
 
     setIsLoading(true);
     try {
+      // 1. Wait for Sign in to finish
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      console.log('✅ Email/password login initiated');
-
-      // ✅ Wait for Firebase Auth to confirm login
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          console.log('✅ Auth confirmed:', user.uid);
-          navigate('/home');
-        }
-      });
+      console.log('✅ Login successful');
+      // 2. Navigate immediately
+      navigate('/home');
     } catch (err) {
       const errorMessage = getFirebaseErrorMessage(err.code);
       setError(errorMessage);
