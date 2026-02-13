@@ -203,7 +203,7 @@ const Home = () => {
                           state: { student },
                         })
                       }
-                      className="text-xs text-blue-500 hover:underline">
+                      className="text-xs text-white bg-amber-600 rounded-md p-2 hover:bg-amber-700">
                       View Homework
                     </button>
                   </div>
@@ -230,7 +230,9 @@ const Home = () => {
               </div>
               <div className="p-4 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl">
                 <p className="text-sm text-gray-600 mb-1">Classes Today</p>
-                <p className="text-2xl font-bold text-emerald-600">8</p>
+                <p className="text-2xl font-bold text-emerald-600">
+                  {todayStudents.length}
+                </p>
               </div>
             </div>
           </div>
