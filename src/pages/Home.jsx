@@ -85,13 +85,14 @@ const Home = () => {
   // Fetch students and count
   useEffect(() => {
     const auth = getAuth();
-    // get current date
-    const today = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(
-      new Date()
-    );
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) return;
+
+      // get current date
+      const today = new Intl.DateTimeFormat('en-US', {
+        weekday: 'long',
+      }).format(new Date());
 
       const q = query(
         collection(db, 'students'),
