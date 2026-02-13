@@ -24,7 +24,7 @@ const HomeWork = () => {
   const [homeworkList, setHomeworkList] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [dueDate, setDueDate] = useState('');
+  const [dueDate, setAssignedDate] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -94,7 +94,7 @@ const HomeWork = () => {
       // clear the form
       setTitle('');
       setDescription('');
-      setDueDate('');
+      setAssignedDate('');
 
       // Refresh list
       await fetchHomework();
@@ -179,7 +179,7 @@ const HomeWork = () => {
           <input
             type="date"
             value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
+            onChange={(e) => setAssignedDate(e.target.value)}
             className="w-full border rounded-md px-3 py-2"
             required
           />
@@ -217,7 +217,9 @@ const HomeWork = () => {
                   <p className="text-sm text-gray-600 mt-1">{hw.description}</p>
                 )}
 
-                <p className="text-sm text-gray-500 mt-2">Due: {hw.dueDate}</p>
+                <p className="text-sm text-gray-500 mt-2">
+                  Assigned: {hw.dueDate}
+                </p>
               </div>
 
               {/* Controls */}
