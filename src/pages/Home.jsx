@@ -80,10 +80,15 @@ const DashboardBanner = () => (
 const Home = () => {
   const navigate = useNavigate(); // useNavigate hook for programmatic navigation
   const [studentCount, setStudentCount] = useState(0);
+  const [todayStudents, setTodayStudents] = useState('');
 
   // Fetch students and count
   useEffect(() => {
     const auth = getAuth();
+    // get current date
+    const today = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(
+      new Date()
+    );
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) return;
@@ -94,11 +99,22 @@ const Home = () => {
       );
 
       const snapshot = await getDocs(q);
+
       setStudentCount(snapshot.size);
+
+      const studentsToday = snapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .filter((student) => student.day === today)
+        .sort((a, b) => (a.visitTime || '').localeCompare(b.visitTime || ''));
+
+      setTodayStudents(studentsToday);
     });
 
     return unsubscribe;
-  });
+  }, []);
 
   // Define dashboard items (title, description, action, and styling)
   const dashboardItems = [
@@ -151,44 +167,52 @@ const Home = () => {
           {/* Recent Activity */}
           <div className="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50 shadow-lg">
             <h2 className="text-xl font-bold text-gray-800 mb-4">
-              Recent Activity
+              {"Today's Lessons"}
             </h2>
+
+            {todayStudents.length > 0
+              ? todayStudents.map((st) => <div key={st.id}></div>)
+              : ''}
             <div className="space-y-4">
-              {[
-                {
-                  action: 'New student enrolled',
-                  time: '2 hours ago',
-                  color: 'bg-green-500',
-                },
-                {
-                  action: 'Homework submitted by Sarah',
-                  time: '4 hours ago',
-                  color: 'bg-emerald-500',
-                },
-                {
-                  action: 'Attendance marked for Math 101',
-                  time: '6 hours ago',
-                  color: 'bg-teal-500',
-                },
-                {
-                  action: 'Calendar event updated',
-                  time: '1 day ago',
-                  color: 'bg-lime-500',
-                },
-              ].map((activity, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+              {todayStudents.length > 0 ? (
+                todayStudents.map((student, index) => (
                   <div
-                    className={`w-2 h-2 ${activity.color} rounded-full`}></div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-700">
-                      {activity.action}
-                    </p>
-                    <p className="text-xs text-gray-500">{activity.time}</p>
+                    key={student.id || index}
+                    className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                    {/* Status indicator - changes color if they have an instrument set */}
+                    <div
+                      className={`w-2 h-2 ${
+                        student.instrument ? 'bg-emerald-500' : 'bg-gray-300'
+                      } rounded-full`}></div>
+
+                    <div className="flex-1 text-left">
+                      <p className="text-sm font-medium text-gray-700">
+                        {student.name} –{' '}
+                        {student.instrument || 'General Lesson'}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Scheduled for {student.visitTime} ({student.duration}{' '}
+                        min)
+                      </p>
+                    </div>
+
+                    {/* Quick link to their specific homework page */}
+                    <button
+                      onClick={() =>
+                        navigate(`/homework/${student.id}`, {
+                          state: { student },
+                        })
+                      }
+                      className="text-xs text-blue-500 hover:underline">
+                      View Homework
+                    </button>
                   </div>
+                ))
+              ) : (
+                <div className="p-3 text-sm text-gray-500 italic">
+                  No lessons scheduled for today.
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
