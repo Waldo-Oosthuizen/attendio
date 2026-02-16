@@ -175,7 +175,7 @@ const Students = () => {
           </h2>
           <button
             onClick={handleAddRow}
-            className="px-4 py-2 mt-4 bg-gradient-to-br from-emerald-500 to-emerald-600 hover:bg-emerald-800 text-white rounded-md mr-2">
+            className="px-4 py-2 mt-4 bg-gradient-to-r from-[#00C853] to-[#009624] shadow-md hover:bg-emerald-800 text-white rounded-md mr-2">
             <Plus className="inline mr-2" />
             Add
           </button>

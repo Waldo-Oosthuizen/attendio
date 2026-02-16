@@ -62,7 +62,7 @@ const Navbar = () => {
         <div className="relative h-16 flex items-center ">
           <button
             onClick={toggleNav}
-            className={`p-2 text-gray-700  rounded-md transition-all duration-300 border-2 border-solid 
+            className={`p-2 text-gray-700  rounded-md transition-all duration-300 hover:bg-slate-100
             ${isNavOpen ? 'ml-48' : 'ml-2'}`}>
             {isNavOpen ? (
               <svg
@@ -114,8 +114,8 @@ const Navbar = () => {
                 ${isNavOpen ? '' : 'justify-center'}
                 ${
                   isActive
-                    ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-md'
-                    : 'text-slate-700 hover:bg-gradient-to-br hover:from-emerald-500 hover:to-emerald-600 hover:text-white'
+                    ? 'bg-gradient-to-r from-[#00C853] to-[#009624] text-white shadow-md'
+                    : 'hover:bg-slate-100 transition-colors duration-200'
                 }`
               }>
               <span className="flex items-center justify-center w-6">

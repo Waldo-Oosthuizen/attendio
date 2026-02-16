@@ -43,7 +43,7 @@ const StudentCard = ({
         </div>
         <span
           className={
-            'inline-flex items-center gap-1 px-2 py-1 rounded-lg text-sm bg-gray-100 text-white bg-emerald-400'
+            'inline-flex items-center gap-1 px-2 py-1 rounded-lg text-sm bg-gradient-to-r from-[#00C853] to-[#009624] text-white shadow-md'
           }>
           {student.day || 'No Day Set'}
         </span>
