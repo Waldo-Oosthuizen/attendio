@@ -5,42 +5,35 @@
 body {
   /* min-h-screen */
   min-height: 100vh;
-
-  /* bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 */
-  background-image: linear-gradient(
-    to bottom right,
-    #f0fdf4,
-    /* green-50 */ #ecfdf5,
-    /* emerald-50 */ #f0fdfa /* teal-50 */
-  );
   background-size: cover;
   background-position: center;
-
   position: relative;
 }
+
 .rbc-header {
+  background: #00c853 !important;
   color: white !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.5px !important;
-  padding: 16px 8px !important;
-  border: none !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 3px solid #009624 !important;
+  /* Glowing edge under the day names */
+  box-shadow: 0 4px 10px rgba(0, 200, 83, 0.2);
 }
 
-/* Month/Week/Day navigation header */
 .rbc-toolbar {
   display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important; /* Spreads groups to the edges */
-  padding: 24px !important;
-  background-color: #374151;
-  border-top-right-radius: 12px !important;
-  border-top-left-radius: 12px !important;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between; /* Pushes navigation and views to opposite ends */
+  padding: 1rem 2rem !important;
+  background: linear-gradient(to right, #00c853, #009624) !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 200, 83, 0.3); /* The Glow */
+  position: relative;
+  z-index: 10;
 }
-
-.rbc-toolbar button {
+v .rbc-toolbar button {
   color: white !important;
   border: 1px solid white !important;
   border-radius: 8px !important;
@@ -61,7 +54,6 @@ body {
   transform: translateY(-1px) !important;
 }
 
-/* Force the label to stay perfectly centered */
 .rbc-toolbar-label {
   flex-grow: 1 !important;
   text-align: center !important;
@@ -121,4 +113,151 @@ body {
 /* (Optional) Slightly larger clickable area */
 .rbc-toolbar .rbc-btn-group > button {
   padding: 0.35rem 0.75rem;
+}
+
+/* Make the time column text smaller and cleaner */
+.rbc-time-column .rbc-label {
+  font-size: 12px;
+  color: #6b7280; /* text-gray-500 */
+}
+
+/* Change the "Current Time" indicator to emerald */
+.rbc-current-time-indicator {
+  background-color: #00c853 !important;
+}
+
+/* Style the event titles inside the boxes */
+.rbc-event-content {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 2px 5px;
+}
+
+/* Remove the harsh borders between time slots */
+.rbc-time-slot {
+  border-top: 1px solid rgba(0, 0, 0, 0.03) !important;
+}
+
+/* The horizontal line itself */
+.rbc-current-time-indicator {
+  background-color: #00c853 !important; /* Your signature emerald */
+  height: 2px !important;
+  z-index: 10 !important;
+  box-shadow: 0 0 10px rgba(0, 200, 83, 0.8); /* The initial glow */
+  animation: pulse-glow 2s infinite; /* Make it breathe */
+}
+
+/* The little circle/dot at the start of the line */
+.rbc-current-time-indicator::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  background-color: #00c853;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(0, 200, 83, 1);
+}
+
+/* Pulse animation logic */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 5px rgba(0, 200, 83, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(0, 200, 83, 1); /* Brightest point */
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(0, 200, 83, 0.6);
+  }
+}
+
+/* This targets the 'Today' column in Time View (Day/Week) */
+.rbc-time-content > .rbc-day-slot.rbc-today {
+  background-color: white !important;
+}
+
+/* This targets the 'Today' cell in Month View */
+.rbc-month-view .rbc-day-bg.rbc-today {
+  background-color: white !important;
+}
+
+/* Ensure no transparency is letting the page gradient show through */
+.rbc-today {
+  background-color: white !important;
+  opacity: 1 !important;
+}
+
+/* Ensure the calendar itself doesn't bring in its own gray backgrounds */
+.rbc-calendar {
+  background-color: white !important;
+}
+
+.rbc-time-view,
+.rbc-month-view {
+  background-color: white !important;
+}
+
+/* This targets the actual grid where lessons are placed */
+.rbc-time-content {
+  background-color: white !important;
+  border-top: 1px solid #f3f4f6 !important;
+}
+
+/* Keep the gutter (where the times 09:00, 10:00 are) white too */
+.rbc-time-gutter,
+.rbc-time-gutter .rbc-timeslot-group {
+  background-color: white !important;
+  border: none !important;
+}
+
+/* Optional: Make the slot lines very faint so they don't look "dirty" on the white */
+.rbc-day-slot .rbc-timeslot-group {
+  border-bottom: 1px solid #f9fafb !important;
+}
+
+@media (max-width: 640px) {
+  .rbc-toolbar {
+    flex-direction: column-reverse !important;
+    gap: 10px;
+  }
+  .rbc-btn-group {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Container for Back, Today, Next */
+.rbc-toolbar .rbc-btn-group:first-child {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 4px;
+  border-radius: 12px;
+  display: flex;
+  gap: 2px; /* Small gap between buttons */
+}
+
+/* Base style for the buttons */
+.rbc-toolbar .rbc-btn-group:first-child button {
+  background-color: transparent !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  text-transform: capitalize !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* Hover effect */
+.rbc-toolbar .rbc-btn-group:first-child button:hover {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  transform: translateY(-1px);
+}
+
+/* Active/Selected state (e.g., if Today is clicked) */
+.rbc-toolbar .rbc-btn-group:first-child button:active {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  transform: translateY(0);
 }
