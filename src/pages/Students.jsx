@@ -168,7 +168,7 @@ const Students = () => {
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden bg-cover bg-center">
       <div
         className="flex flex-col gap-4
-  bg-white p-8 lg:ml-16 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200">
+  bg-white p-8 lg:ml-16  mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200">
         <div className="flex justify-between w-full">
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <GraduationCap className="text-2xl font-bold" /> Students

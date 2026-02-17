@@ -149,11 +149,25 @@ const Schedule = () => {
     return unsub;
   }, [authReady, uid]);
 
-  /* ----------  RESPONSIVE VIEW (DAY on mobile)  ---------- */
+  /* ----------  Custom colors for events  ---------- */
+  const eventStyleGetter = () => {
+    return {
+      style: {
+        // Use your signature emerald gradient hex codes
+        background: 'linear-gradient(to right, #00c853, #009624)',
+        borderRadius: '6px',
+        opacity: 0.9,
+        color: 'white', // Text color
+        border: 'none',
+        fontSize: '0.85rem',
+        fontWeight: '500',
+      },
+    };
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden bg-cover bg-center">
-      <div className="shadow-lg rounded-lg p-4 sm:p-8 max-w-full mx-auto lg:ml-16 ml-0 bg-white ">
+    <div className="min-h-screen relative overflow-hidden bg-cover bg-center">
+      <div className="shadow-lg rounded-lg p-4 sm:p-8 max-w-full mx-auto lg:ml-16 ml-0 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
         {!authReady && (
           <p className="mb-4 text-sm text-black-500">
             Checking your account...
@@ -165,7 +179,7 @@ const Schedule = () => {
             page to see them here.
           </p>
         )}
-        <div className="mt-2 h-[calc(100vh -180px)] sm:h-[100vh] mb-4 overflow-y-auto overflow-x-auto ">
+        <div className="mt-2 h-[calc(100vh -180px)] sm:h-[100vh] mb-4 overflow-y-auto overflow-x-auto  rounded-md">
           {' '}
           <Calendar
             localizer={localizer}
@@ -176,6 +190,7 @@ const Schedule = () => {
             }
             startAccessor="start"
             endAccessor="end"
+            eventPropGetter={eventStyleGetter}
             views={{ day: true }}
             defaultView={defaultView}
             style={{ height: '90vh', width: '100%' }}
