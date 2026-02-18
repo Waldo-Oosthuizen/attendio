@@ -22,6 +22,7 @@ import {
   User,
 } from 'lucide-react';
 import FilterBar from '../components/FilterBar';
+import { startOfWeek, endOfWeek, isWithinInterval, parseISO } from 'date-fns';
 
 // For filter
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -150,11 +151,38 @@ const StudentManagement = () => {
     return acc;
   }, {});
 
+  // check if homework was marked for the week:
+  const getWeeklyStatus = (student) => {
+    // 1. Define the current week boundaries (Monday start)
+    const now = new Date();
+    const weekStart = startOfWeek(now, { weekStartsOn: 1 });
+    const weekEnd = endOfWeek(now, { weekStartsOn: 1 });
+
+    // 2. Check Attendance History for any record within this week
+    const attendanceThisWeek = student.attendanceHistory?.some((record) => {
+      const recordDate = parseISO(record.date);
+      return isWithinInterval(recordDate, { start: weekStart, end: weekEnd });
+    });
+
+    // 3. Check Homework History
+    // Assuming your homework entries are stored in a 'homeworkHistory' array
+    const homeworkThisWeek = student.homeworkHistory?.some((hw) => {
+      const hwDate = hw.timestamp.toDate(); // If using Firestore Timestamp
+      return isWithinInterval(hwDate, { start: weekStart, end: weekEnd });
+    });
+
+    return {
+      attendanceDone: attendanceThisWeek,
+      homeworkDone: homeworkThisWeek,
+      fullyComplete: attendanceThisWeek && homeworkThisWeek,
+    };
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden bg-cover bg-center">
       <header
         className="  flex flex-col gap-4
-  bg-white p-8 lg:ml-16 flex mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 ">
+  bg-white p-8 lg:ml-16 mb-4 bg-white/70 backdrop-blur-xl border-b border-gray-200 ">
         <div className="flex items-center gap-2 w-full">
           <Users className="h-6 w-6" />
           <h1 className="text-2xl font-bold">Student Attendance & Homework</h1>
@@ -204,7 +232,7 @@ const StudentManagement = () => {
                       const stats = getAttendanceStats(
                         student.attendanceHistory
                       );
-
+                      const weekly = getWeeklyStatus(student);
                       return (
                         <div
                           key={student.id}
@@ -217,24 +245,25 @@ const StudentManagement = () => {
                                 <h2 className="font-semibold text-black">
                                   {student.name}
                                 </h2>
+                                {/* Weekly Progress Badge */}
+                                <div className="flex gap-1">
+                                  <div
+                                    className={`h-2 w-8 rounded-full ${weekly.attendanceDone ? 'bg-emerald-500' : 'bg-gray-200'}`}
+                                    title="Attendance"
+                                  />
+                                  <div
+                                    className={`h-2 w-8 rounded-full ${weekly.homeworkDone ? 'bg-amber-500' : 'bg-gray-200'}`}
+                                    title="Homework"
+                                  />
+                                </div>
                               </div>
 
-                              <span
-                                className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-sm ${
-                                  student.attendance === 'Present'
-                                    ? 'bg-green-100 text-green-600'
-                                    : student.attendance === 'Absent'
-                                      ? 'bg-red-100 text-red-600'
-                                      : 'bg-gray-100 text-gray-600'
-                                }`}>
-                                {student.attendance === 'Present' && (
-                                  <CheckCircle className="h-4 w-4" />
-                                )}
-                                {student.attendance === 'Absent' && (
-                                  <XCircle className="h-4 w-4" />
-                                )}
-                                {student.attendance || 'Not marked'}
-                              </span>
+                              {/* Detailed Status Label */}
+                              <p className="text-xs text-gray-500">
+                                {weekly.fullyComplete
+                                  ? '✅ Ready for next week'
+                                  : `Pending: ${!weekly.attendanceDone ? 'Attendance' : ''} ${!weekly.homeworkDone ? 'Homework' : ''}`}
+                              </p>
                             </div>
                           </div>
 

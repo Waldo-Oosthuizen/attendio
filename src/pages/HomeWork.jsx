@@ -10,6 +10,7 @@ import {
   where,
   getDocs,
   Timestamp,
+  arrayUnion,
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
@@ -24,7 +25,7 @@ const HomeWork = () => {
   const [homeworkList, setHomeworkList] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [dueDate, setAssignedDate] = useState('');
+  const [assignedDate, setAssignedDate] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ const HomeWork = () => {
 
   // Assign homework function
   const assignHomework = async () => {
-    if (!title || !dueDate) {
+    if (!title || !assignedDate) {
       setError('Title and due date are required');
       return;
     }
@@ -80,17 +81,28 @@ const HomeWork = () => {
     try {
       setLoading(true);
       setError('');
+      const today = new Date().toISOString().split('T')[0];
 
       await addDoc(collection(db, 'homework'), {
         studentId,
         title,
         description,
-        dueDate,
+        assignedDate,
         status: 'not_done',
         ownerId: auth.currentUser.uid,
         assignedAt: Timestamp.now(),
       });
 
+      const studentRef = doc(db, 'students', studentId);
+
+      await updateDoc(studentRef, {
+        lastHomeworkDate: today, // For the "Daily" check
+        homeworkHistory: arrayUnion({
+          date: today,
+          title: title,
+          timestamp: Timestamp.now(),
+        }), // For the "Weekly" check
+      });
       // clear the form
       setTitle('');
       setDescription('');
@@ -178,7 +190,7 @@ const HomeWork = () => {
           />
           <input
             type="date"
-            value={dueDate}
+            value={assignedDate}
             onChange={(e) => setAssignedDate(e.target.value)}
             className="w-full border rounded-md px-3 py-2"
             required
@@ -218,7 +230,7 @@ const HomeWork = () => {
                 )}
 
                 <p className="text-sm text-gray-500 mt-2">
-                  Assigned: {hw.dueDate}
+                  Assigned: {hw.assignedDate}
                 </p>
               </div>
 
