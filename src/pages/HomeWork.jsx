@@ -10,7 +10,6 @@ import {
   where,
   getDocs,
   Timestamp,
-  arrayUnion,
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
@@ -81,7 +80,6 @@ const HomeWork = () => {
     try {
       setLoading(true);
       setError('');
-      const today = new Date().toISOString().split('T')[0];
 
       await addDoc(collection(db, 'homework'), {
         studentId,
@@ -93,16 +91,6 @@ const HomeWork = () => {
         assignedAt: Timestamp.now(),
       });
 
-      const studentRef = doc(db, 'students', studentId);
-
-      await updateDoc(studentRef, {
-        lastHomeworkDate: today, // For the "Daily" check
-        homeworkHistory: arrayUnion({
-          date: today,
-          title: title,
-          timestamp: Timestamp.now(),
-        }), // For the "Weekly" check
-      });
       // clear the form
       setTitle('');
       setDescription('');
