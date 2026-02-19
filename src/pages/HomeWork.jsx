@@ -10,6 +10,7 @@ import {
   where,
   getDocs,
   Timestamp,
+  arrayUnion,
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
@@ -95,6 +96,16 @@ const HomeWork = () => {
       setTitle('');
       setDescription('');
       setAssignedDate('');
+
+      const studentRef = doc(db, 'students', studentId);
+      await updateDoc(studentRef, {
+        // 'date' here must match the key your getWeeklyStatus logic looks for
+        homeworkHistory: arrayUnion({
+          date: assignedDate, // This is the YYYY-MM-DD string
+          title: title,
+          timestamp: Timestamp.now(),
+        }),
+      });
 
       // Refresh list
       await fetchHomework();

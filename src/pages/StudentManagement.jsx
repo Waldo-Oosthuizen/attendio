@@ -165,9 +165,8 @@ const StudentManagement = () => {
     });
 
     // 3. Check Homework History
-    // Assuming your homework entries are stored in a 'homeworkHistory' array
     const homeworkThisWeek = student.homeworkHistory?.some((hw) => {
-      const hwDate = hw.timestamp.toDate(); // If using Firestore Timestamp
+      const hwDate = parseISO(hw.date);
       return isWithinInterval(hwDate, { start: weekStart, end: weekEnd });
     });
 
