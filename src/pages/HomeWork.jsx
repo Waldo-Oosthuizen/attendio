@@ -148,9 +148,10 @@ const HomeWork = () => {
       return;
     }
 
-    try {
-      setLoading(true);
+    setError('');
+    setLoading(true);
 
+    try {
       // 1. Delete from the main homework collection
       await deleteDoc(doc(db, 'homework', hw.id));
 
