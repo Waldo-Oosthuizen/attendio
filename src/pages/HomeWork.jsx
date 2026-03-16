@@ -6,15 +6,17 @@ import {
   doc,
   addDoc,
   updateDoc,
+  deleteDoc,
   query,
   where,
   getDocs,
   Timestamp,
   arrayUnion,
+  arrayRemove,
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
-import { Notebook, ArrowLeft } from 'lucide-react';
+import { Notebook, ArrowLeft, Trash2 } from 'lucide-react';
 
 const HomeWork = () => {
   const { studentId } = useParams();
@@ -51,8 +53,9 @@ const HomeWork = () => {
         id: doc.id,
         ...doc.data(),
       }));
+      const sortedData = data.sort((a, b) => b.assignedAt - a.assignedAt);
 
-      setHomeworkList(data);
+      setHomeworkList(sortedData);
       setError('');
     } catch (err) {
       console.error('Error fetching homework:', err);
@@ -103,7 +106,7 @@ const HomeWork = () => {
         homeworkHistory: arrayUnion({
           date: assignedDate, // This is the YYYY-MM-DD string
           title: title,
-          timestamp: Timestamp.now(),
+          assignedAt: Timestamp.now(),
         }),
       });
 
@@ -132,6 +135,42 @@ const HomeWork = () => {
     } catch (err) {
       console.error('Error updating homework', err);
       setError('Failed to update homework status');
+    }
+  };
+
+  // Delete
+  const deleteHomework = async (hw) => {
+    if (
+      !window.confirm(
+        `Delete "${hw.title}"? This will also update the progress badge.`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // 1. Delete from the main homework collection
+      await deleteDoc(doc(db, 'homework', hw.id));
+
+      // 2. Remove the specific entry from the Student's history array
+      const studentRef = doc(db, 'students', studentId);
+      await updateDoc(studentRef, {
+        homeworkHistory: arrayRemove({
+          date: hw.assignedDate,
+          title: hw.title,
+          assignedAt: hw.assignedAt,
+        }),
+      });
+
+      // 3. Update local UI state
+      setHomeworkList((prev) => prev.filter((item) => item.id !== hw.id));
+    } catch (err) {
+      console.error('Error deleting homework:', err);
+      setError('Failed to delete record');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -258,6 +297,13 @@ const HomeWork = () => {
                       ? 'Partially practiced'
                       : 'Did not practice'}
                 </span>
+                {/* NEW DELETE BUTTON */}
+                <button
+                  onClick={() => deleteHomework(hw)}
+                  disabled={loading}
+                  className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors disabled:opacity-50">
+                  <Trash2 className="h-4 w-4" />
+                </button>
               </div>
             </div>
           ))
